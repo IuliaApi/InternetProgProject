@@ -367,7 +367,142 @@ function addProductToCart() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     loadProductDetails();
+    setupComparisonButton();
 });
+
+/**
+ * Setup comparison button
+ */
+function setupComparisonButton() {
+    const compareBtn = document.getElementById('compareBtn');
+    if (!compareBtn) return;
+    
+    // Get current product ID from URL or existing data
+    const productId = getCurrentProductId();
+    if (!productId) return;
+    
+    // Update button state
+    updateCompareBtnState(compareBtn, productId);
+    
+    // Add click handler
+    compareBtn.addEventListener('click', () => {
+        handleCompareClick(productId);
+    });
+}
+
+/**
+ * Get current product ID from URL or page
+ */
+function getCurrentProductId() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) return Number(id);
+    
+    // Try to get from page data
+    const productNameEl = document.getElementById('productName');
+    if (productNameEl) {
+        // Search productDetails for matching name
+        for (let id in productDetails) {
+            if (productDetails[id].name === productNameEl.textContent) {
+                return Number(id);
+            }
+        }
+    }
+    
+    return null;
+}
+
+/**
+ * Update compare button state
+ */
+function updateCompareBtnState(btn, productId) {
+    try {
+        const data = localStorage.getItem('techhub-comparison');
+        const list = data ? JSON.parse(data) : [];
+        const isInComparison = list.includes(Number(productId));
+        
+        if (isInComparison) {
+            btn.textContent = '✓ In Comparison';
+            btn.classList.add('active');
+        } else {
+            btn.textContent = 'Add to Compare';
+            btn.classList.remove('active');
+        }
+    } catch (e) {
+        console.error('Error updating compare button:', e);
+    }
+}
+
+/**
+ * Handle compare button click
+ */
+function handleCompareClick(productId) {
+    productId = Number(productId);
+    
+    try {
+        let list = [];
+        const data = localStorage.getItem('techhub-comparison');
+        list = data ? JSON.parse(data) : [];
+        
+        // Check if already in comparison
+        const index = list.indexOf(productId);
+        const btn = document.getElementById('compareBtn');
+        
+        if (index > -1) {
+            // Remove
+            list.splice(index, 1);
+            if (btn) {
+                btn.textContent = 'Add to Compare';
+                btn.classList.remove('active');
+            }
+        } else {
+            // Check max limit
+            if (list.length >= 4) {
+                alert('You can compare up to 4 products. Please remove one first.');
+                return;
+            }
+            
+            // Add
+            list.push(productId);
+            if (btn) {
+                btn.textContent = '✓ In Comparison';
+                btn.classList.add('active');
+            }
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('techhub-comparison', JSON.stringify(list));
+        
+        // Update badge on all pages
+        updateAllComparisonBadges();
+        
+        console.log('Comparison updated:', list);
+    } catch (e) {
+        console.error('Error handling compare click:', e);
+    }
+}
+
+/**
+ * Update comparison badge across all pages
+ */
+function updateAllComparisonBadges() {
+    try {
+        const data = localStorage.getItem('techhub-comparison');
+        const list = data ? JSON.parse(data) : [];
+        
+        // Update all badge elements
+        document.querySelectorAll('.comparison-badge').forEach(badge => {
+            if (list.length > 0) {
+                badge.textContent = list.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+    } catch (e) {
+        console.error('Error updating badges:', e);
+    }
+}
 
 // ========================================
 // REVIEWS RENDERING

@@ -232,26 +232,60 @@ function logout() {
 function updateAuthUI() {
     const user = getCurrentUser();
     
-    // Update navbar auth items
-    const cartNavItem = document.getElementById('cartNavItem');
-    const loginNavItem = document.getElementById('loginNavItem');
+    // Update navbar auth items with new dropdown structure
+    const authNavItem = document.getElementById('authNavItem');
+    const userDropdown = document.getElementById('userDropdown');
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const authBtn = authNavItem?.querySelector('.auth-btn');
     
-    if (cartNavItem && loginNavItem) {
-        // Cart is always visible
-        cartNavItem.style.display = 'block';
-        
+    if (authNavItem && authBtn && userDropdown) {
         if (user) {
-            // User is logged in
+            // User is logged in - show user tab with dropdown
             const nameLabel = user.firstName ? user.firstName : (user.email || 'Account');
-            loginNavItem.innerHTML = `<a href="profile.html">👤 ${nameLabel}</a>`;
+            authBtn.textContent = `👤 ${nameLabel}`;
+            authBtn.href = 'profile.html';
+            authBtn.style.cursor = 'pointer';
             
-            // Update cart count
-            updateCartCount();
+            // Set user name in dropdown
+            userNameDisplay.textContent = nameLabel;
+            
+            // Close dropdown when clicking outside (only add once)
+            if (!window.dropdownOutsideListener) {
+                window.dropdownOutsideListener = function(e) {
+                    if (!authNavItem.contains(e.target)) {
+                        userDropdown.style.display = 'none';
+                    }
+                };
+                document.addEventListener('click', window.dropdownOutsideListener);
+            }
         } else {
-            // User is not logged in
-            loginNavItem.innerHTML = '<a href="login.html">Login</a>';
+            // User not logged in - show login link
+            authBtn.textContent = 'Login';
+            authBtn.href = 'login.html';
+            authBtn.onclick = null;
+            userDropdown.style.display = 'none';
         }
     }
+    
+    // Cart always visible
+    const cartNavItem = document.getElementById('cartNavItem');
+    if (cartNavItem) {
+        cartNavItem.style.display = 'block';
+    }
+}
+
+// Logout function
+function handleLogout() {
+    // Clear all auth data
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentEmail');
+    deleteCookie('authToken');
+    
+    // Reset UI
+    updateAuthUI();
+    
+    // Redirect to home
+    window.location.href = 'index.html';
 }
 
 // ========================================

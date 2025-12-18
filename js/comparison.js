@@ -34,8 +34,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const allProducts = await response.json();
         console.log('All products fetched:', allProducts.length);
         
+        // Convert comparison list to numbers for matching
+        const comparisonIds = comparisonList.map(id => Number(id));
+        
         // Get only the products in comparison
-        const productsToShow = allProducts.filter(p => comparisonList.includes(p.id));
+        const productsToShow = allProducts.filter(p => comparisonIds.includes(p.id));
         console.log('Products to show:', productsToShow.length, productsToShow.map(p => p.name));
         
         if (productsToShow.length === 0) {
@@ -96,61 +99,74 @@ function buildComparisonTableHTML(products) {
     let html = '<div class="comparison-table"><table>';
     
     // Header
-    html += '<thead><tr><th style="width: 200px;">Product</th>';
+    html += '<thead><tr><th class="attribute-label">Product</th>';
     products.forEach((p, i) => {
-        html += `<th style="width: 200px;">${p.name}</th>`;
+        html += `<th class="product-column">${escapeHtml(p.name)}</th>`;
     });
     html += '</tr></thead><tbody>';
     
     // Image row
-    html += '<tr><td style="font-weight: bold;">Image</td>';
+    html += '<tr><td class="attribute-label"><strong>Image</strong></td>';
     products.forEach(p => {
-        const img = p.image && !p.image.includes('http') ? 'assets/images/' + p.image : p.image;
-        html += `<td><img src="${img}" style="width: 150px; height: 100px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'"></td>`;
+        const img = p.image && !p.image.includes('http') ? 'assets/images/' + p.image : (p.image || 'https://via.placeholder.com/150x100?text=No+Image');
+        html += `<td class="product-column"><img src="${escapeHtml(img)}" class="product-image" onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'"></td>`;
     });
     html += '</tr>';
     
     // Price row
-    html += '<tr><td style="font-weight: bold;">Price</td>';
+    html += '<tr><td class="attribute-label"><strong>Price</strong></td>';
     products.forEach(p => {
-        html += `<td style="color: var(--primary-color); font-weight: bold; font-size: 1.2em;">$${p.price}</td>`;
+        html += `<td class="product-column"><div class="product-price">$${p.price.toFixed(2)}</div></td>`;
     });
     html += '</tr>';
     
     // Rating row
-    html += '<tr><td style="font-weight: bold;">Rating</td>';
+    html += '<tr><td class="attribute-label"><strong>Rating</strong></td>';
     products.forEach(p => {
         const rating = p.rating || 0;
-        html += `<td>⭐ ${rating}/5 (${p.reviews} reviews)</td>`;
+        const reviewCount = p.reviews || 0;
+        html += `<td class="product-column"><div class="rating-stars">⭐ ${rating.toFixed(1)}/5 <br><small>(${reviewCount} reviews)</small></div></td>`;
     });
     html += '</tr>';
     
     // Stock row
-    html += '<tr><td style="font-weight: bold;">Stock</td>';
+    html += '<tr><td class="attribute-label"><strong>Stock</strong></td>';
     products.forEach(p => {
-        const inStock = p.stock > 0 ? `<span style="color: green;">In Stock (${p.stock})</span>` : '<span style="color: red;">Out of Stock</span>';
-        html += `<td>${inStock}</td>`;
+        const stock = p.stock || 0;
+        let stockClass = 'in-stock';
+        let stockText = `In Stock (${stock})`;
+        
+        if (stock === 0) {
+            stockClass = 'out-of-stock';
+            stockText = 'Out of Stock';
+        } else if (stock < 5) {
+            stockClass = 'low-stock';
+            stockText = `Low Stock (${stock})`;
+        }
+        
+        html += `<td class="product-column"><span class="stock-status ${stockClass}">${stockText}</span></td>`;
     });
     html += '</tr>';
     
     // Category row
-    html += '<tr><td style="font-weight: bold;">Category</td>';
+    html += '<tr><td class="attribute-label"><strong>Category</strong></td>';
     products.forEach(p => {
-        html += `<td>${p.category}</td>`;
+        html += `<td class="product-column">${escapeHtml(p.category || 'N/A')}</td>`;
     });
     html += '</tr>';
     
     // Description row
-    html += '<tr><td style="font-weight: bold;">Description</td>';
+    html += '<tr><td class="attribute-label"><strong>Description</strong></td>';
     products.forEach(p => {
-        html += `<td style="font-size: 0.9em;"><small>${p.description || 'N/A'}</small></td>`;
+        const desc = p.description || 'No description available';
+        html += `<td class="product-column"><small>${escapeHtml(desc)}</small></td>`;
     });
     html += '</tr>';
     
     // Remove buttons
-    html += '<tr><td style="font-weight: bold;">Actions</td>';
+    html += '<tr><td class="attribute-label"><strong>Actions</strong></td>';
     products.forEach(p => {
-        html += `<td><button onclick="removeProduct(${p.id})" class="btn btn-danger" style="width: 100%;">Remove</button></td>`;
+        html += `<td class="product-column"><button onclick="removeProduct(${p.id})" class="product-remove">Remove from Compare</button></td>`;
     });
     html += '</tr>';
     
@@ -171,7 +187,7 @@ function getComparisonAttributes(products) {
  */
 function removeProduct(productId) {
     let list = getComparisonList();
-    list = list.filter(id => id !== productId);
+    list = list.filter(id => id !== Number(productId));
     localStorage.setItem('techhub-comparison', JSON.stringify(list));
     location.reload();
 }
@@ -180,11 +196,36 @@ function removeProduct(productId) {
  * Clear all comparisons
  */
 function clearComparison() {
-    if (confirm('Clear all comparisons?')) {
+    showConfirmModal('Clear All Comparisons?', 'Are you sure you want to clear all products from comparison?', () => {
         clearComparisonStorage();
-        location.reload();
-    }
+        // Use a small delay to ensure storage is cleared, then reload
+        setTimeout(() => {
+            location.reload();
+        }, 100);
+    });
 }
+
+function showConfirmModal(title, message, onConfirm) {
+    const modal = document.getElementById('confirmModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const confirmBtn = document.getElementById('confirmBtn');
+    
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    
+    // Set up confirm button with callback that closes modal first
+    confirmBtn.onclick = () => {
+        closeModal();
+        if (onConfirm) onConfirm();
+    };
+    
+    modal.style.display = 'flex';
+}
+
+function closeModal() {
+    const modal = document.getElementById('confirmModal');
+    modal.style.display = 'none';
 }
 
 /**

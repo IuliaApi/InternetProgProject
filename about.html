@@ -37,6 +37,17 @@
                     <span class="comparison-badge" style="display: none;"></span>
                 </a></li>
                 <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button></li>
+                <li id="authNavItem" class="auth-nav-item">
+                    <a href="login.html" class="auth-btn">Login</a>
+                    <div id="userDropdown" class="user-dropdown" style="display: none;">
+                        <div class="user-dropdown-header">
+                            <span id="userNameDisplay"></span>
+                        </div>
+                        <a href="profile.html" class="dropdown-item">👤 Profile</a>
+                        <a href="cart.html" class="dropdown-item">🛒 Cart</a>
+                        <button type="button" class="dropdown-item logout-btn" onclick="handleLogout()">🚪 Logout</button>
+                    </div>
+                </li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -109,50 +120,40 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="products.html">Shop</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="#">Privacy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Newsletter</h4>
-                    <p>Subscribe to get special offers and updates!</p>
-                    <form onsubmit="handleNewsletterSignup(event)" class="newsletter-form">
-                        <input type="email" placeholder="Enter your email" required aria-label="Newsletter email">
-                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 8px 12px; font-size: 0.9rem;">Subscribe</button>
-                    </form>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p>Email: info@techhub.com</p>
-                    <p>Phone: +1 (555) 123-4567</p>
-                    <h4 style="margin-top: 20px;">Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#" title="Facebook" aria-label="Follow us on Facebook">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        </a>
-                        <a href="#" title="Twitter" aria-label="Follow us on Twitter">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 002.856-3.515 10 10 0 01-2.836.856 5 5 0 002.19-2.758 10 10 0 01-3.129 1.195 5 5 0 00-8.592 4.547 15 15 0 01-10.863-5.5 5 5 0 001.548 6.659 5 5 0 01-2.265-.616v.06a5 5 0 004.001 4.905 5 5 0 01-2.262.085 5 5 0 004.668 3.48 10 10 0 01-6.157 2.124 15 15 0 008.362 2.45c10.034 0 15.507-8.62 15.507-16.064 0-.244-.005-.484-.015-.72a11.013 11.013 0 002.697-2.81z"/></svg>
-                        </a>
-                        <a href="#" title="Instagram" aria-label="Follow us on Instagram">
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 2h8.5C19.5 2 22 4.5 22 7.75v8.5C22 19.5 19.5 22 16.25 22h-8.5C4.5 22 2 19.5 2 16.25v-8.5C2 4.5 4.5 2 7.75 2M7.75 4C5.597 4 4 5.597 4 7.75v8.5C4 18.403 5.597 20 7.75 20h8.5c2.153 0 3.75-1.597 3.75-3.75v-8.5C20 5.597 18.403 4 16.25 4h-8.5M12 7c2.762 0 5 2.238 5 5s-2.238 5-5 5-5-2.238-5-5 2.238-5 5-5M12 9c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3M17.5 6.5c.621 0 1.125.504 1.125 1.125S18.121 8.75 17.5 8.75 16.375 8.246 16.375 7.625 16.879 6.5 17.5 6.5Z"/></svg>
-                        </a>
-                    </div>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About TechHub</h4>
+                <p>Your trusted destination for premium tech products and accessories.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="products.html">Shop</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <p>Subscribe for updates and exclusive offers</p>
+                <form onsubmit="subscribeNewsletter(event)" class="newsletter-form">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
-            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechHub Store. All rights reserved.</p>
+        </div>
         </div>
     </footer>
 

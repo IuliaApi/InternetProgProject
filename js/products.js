@@ -9,6 +9,18 @@ let currentView = 'grid';
 let currentSort = 'popular';
 const itemsPerPage = 12;
 
+// Fetch and load products from JSON
+async function loadProducts() {
+    try {
+        const response = await fetch('data/products.json');
+        const products = await response.json();
+        return products;
+    } catch (error) {
+        console.error('Error loading products:', error);
+        return [];
+    }
+}
+
 function highlightText(text, query) {
     if (!query) return text;
     const terms = query.trim().split(/\s+/).filter(Boolean);
@@ -122,6 +134,7 @@ function applyFilters() {
     
     applySort();
     currentPage = 1;
+    updateCategoryInfo();
     displayProducts();
 }
 
@@ -144,6 +157,30 @@ function applySort() {
         default:
             filteredProducts.sort((a, b) => b.reviews - a.reviews);
     }
+}
+
+/**
+ * Update category info display
+ */
+function updateCategoryInfo() {
+    const categoryInfo = document.getElementById('categoryInfo');
+    if (!categoryInfo) return;
+    
+    const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(el => el.value);
+    
+    let infoText = '';
+    
+    if (selectedCategories.length === 0) {
+        infoText = `Showing ${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`;
+    } else if (selectedCategories.length === 1) {
+        const category = selectedCategories[0];
+        const displayName = category.charAt(0).toUpperCase() + category.slice(1);
+        infoText = `${displayName} - ${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`;
+    } else {
+        infoText = `Filtered - ${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`;
+    }
+    
+    categoryInfo.textContent = infoText;
 }
 
 // ========================================
@@ -206,7 +243,7 @@ function updateComparisonBadge() {
 // PAGE LOAD - INITIALIZE EVERYTHING
 // ========================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Show skeleton loading while preparing products
     const container = document.getElementById('productsContainer');
     if (container) {
@@ -254,11 +291,16 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
     
-    if (!window.allProductsData) {
+    // Load products from JSON file
+    const products = await loadProducts();
+    if (products.length === 0) {
+        if (container) {
+            container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px;">Error loading products. Please refresh the page.</p>';
+        }
         return;
     }
     
-    allProducts = [...window.allProductsData];
+    allProducts = [...products];
     filteredProducts = [...allProducts];
     
     // Initialize comparison badge
@@ -398,11 +440,15 @@ function addMoreProducts() {
  */
 function toggleWishlist(productId, btn) {
     try {
+        productId = Number(productId);
         let wishlist = [];
         const stored = localStorage.getItem('techhub-wishlist');
         if (stored) {
             wishlist = JSON.parse(stored);
         }
+        
+        // Convert all to numbers for comparison
+        wishlist = wishlist.map(id => Number(id));
         
         const index = wishlist.indexOf(productId);
         if (index > -1) {
@@ -414,6 +460,7 @@ function toggleWishlist(productId, btn) {
         }
         
         localStorage.setItem('techhub-wishlist', JSON.stringify(wishlist));
+        console.log('Wishlist updated:', wishlist);
         updateWishlistBadge();
     } catch (e) {
         console.error('Error toggling wishlist:', e);

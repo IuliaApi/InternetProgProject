@@ -154,10 +154,10 @@ class ComparisonManager {
             }
 
             if (e.target.classList.contains('clear-comparison-btn')) {
-                if (confirm('Clear all comparisons?')) {
+                showConfirmModal('Clear All Comparisons?', 'Are you sure you want to clear all products from comparison?', () => {
                     this.clearComparison();
                     this.updateComparisonBadge();
-                }
+                });
             }
         });
     }

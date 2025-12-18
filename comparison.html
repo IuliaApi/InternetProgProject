@@ -39,7 +39,8 @@
         .comparison-controls {
             display: flex;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-top: 30px;
+            margin-bottom: 50px;
             justify-content: center;
             flex-wrap: wrap;
             animation: fadeIn 0.8s ease 0.2s both;
@@ -115,6 +116,7 @@
             overflow: hidden;
             border: 1px solid var(--border-color);
             animation: fadeIn 0.6s ease;
+            margin-bottom: 30px;
         }
 
         .comparison-table table {
@@ -376,7 +378,17 @@
                     <span class="comparison-badge" style="display: none;"></span>
                 </a></li>
                 <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button></li>
-            </ul>
+                <li id="authNavItem" class="auth-nav-item">
+                    <a href="login.html" class="auth-btn">Login</a>
+                    <div id="userDropdown" class="user-dropdown" style="display: none;">
+                        <div class="user-dropdown-header">
+                            <span id="userNameDisplay"></span>
+                        </div>
+                        <a href="profile.html" class="dropdown-item">👤 Profile</a>
+                        <a href="cart.html" class="dropdown-item">🛒 Cart</a>
+                        <button type="button" class="dropdown-item logout-btn" onclick="handleLogout()">🚪 Logout</button>
+                    </div>
+                </li>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -393,18 +405,18 @@
                 <p>Compare specifications and prices side-by-side</p>
             </div>
 
+            <div id="comparisonContent"></div>
+
             <div class="comparison-controls">
                 <a href="products.html" class="btn-back">← Back to Products</a>
                 <button type="button" class="btn-clear clear-comparison-btn" onclick="clearComparison()">Clear All</button>
             </div>
-
-            <div id="comparisonContent"></div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-container">
+        <div class="footer-content">
             <div class="footer-section">
                 <h4>About TechHub</h4>
                 <p>Your trusted destination for premium tech products and accessories.</p>
@@ -439,6 +451,18 @@
             <p>&copy; 2024 TechHub Store. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="custom-modal" style="display: none;">
+        <div class="modal-content">
+            <h3 id="modalTitle">Confirm Action</h3>
+            <p id="modalMessage">Are you sure?</p>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                <button type="button" class="modal-btn modal-btn-confirm" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="js/auth.js"></script>
