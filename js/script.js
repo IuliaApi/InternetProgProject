@@ -1,4 +1,104 @@
 // ========================================
+// SIMPLE COMPARISON SYSTEM
+// ========================================
+window.simpleComparison = {
+    list: [],
+    init: function() {
+        this.load();
+        console.log('Simple comparison initialized, list:', this.list);
+    },
+    load: function() {
+        try {
+            const data = localStorage.getItem('techhub-comparison');
+            this.list = data ? JSON.parse(data) : [];
+        } catch(e) {
+            this.list = [];
+        }
+    },
+    save: function() {
+        try {
+            localStorage.setItem('techhub-comparison', JSON.stringify(this.list));
+        } catch(e) {}
+    },
+    add: function(id) {
+        id = Number(id);
+        if (!this.list.includes(id)) {
+            if (this.list.length < 4) {
+                this.list.push(id);
+                this.save();
+                this.updateUI();
+                return true;
+            }
+        }
+        return false;
+    },
+    remove: function(id) {
+        id = Number(id);
+        this.list = this.list.filter(x => x !== id);
+        this.save();
+        this.updateUI();
+    },
+    toggle: function(id) {
+        id = Number(id);
+        if (this.list.includes(id)) {
+            this.remove(id);
+        } else {
+            this.add(id);
+        }
+    },
+    updateUI: function() {
+        // Update badge
+        const badge = document.querySelector('.comparison-badge');
+        if (badge) {
+            if (this.list.length > 0) {
+                badge.textContent = this.list.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        // Update buttons
+        document.querySelectorAll('.compare-btn').forEach(btn => {
+            const id = Number(btn.dataset.productId);
+            if (this.list.includes(id)) {
+                btn.innerHTML = '✓ In Comparison';
+                btn.classList.add('active');
+            } else {
+                btn.innerHTML = 'Add to Compare';
+                btn.classList.remove('active');
+            }
+        });
+    }
+};
+
+// Initialize comparison system
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        window.simpleComparison.init();
+        window.simpleComparison.updateUI();
+    });
+} else {
+    window.simpleComparison.init();
+    window.simpleComparison.updateUI();
+}
+
+// ========================================
+// PRODUCT LOOKUP DATABASE
+// ========================================
+
+let productDatabase = {};
+
+// Load product database from JSON
+fetch('data/products.json')
+    .then(response => response.json())
+    .then(products => {
+        products.forEach(product => {
+            productDatabase[product.name] = product.image;
+        });
+    })
+    .catch(error => console.error('Error loading product database:', error));
+
+// ========================================
 // API SIMULATION WITH AJAX
 // ========================================
 
@@ -197,6 +297,9 @@ function selectSuggestion(productName) {
 
 // Add search input listener
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize cart count display
+    updateCartCount();
+    
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
@@ -302,8 +405,16 @@ function saveCart(cart) {
     updateCartCount();
 }
 
+// Add item to cart from button with data attributes
+function addToCartFromButton(button) {
+    const name = button.getAttribute('data-product-name');
+    const price = parseFloat(button.getAttribute('data-product-price'));
+    const image = button.getAttribute('data-product-image');
+    addToCart(name, price, image);
+}
+
 // Add item to cart (stored in cookies)
-function addToCart(productName, price) {
+function addToCart(productName, price, imageUrl) {
     let cart = getCart();
     
     // Check if product already exists
@@ -431,30 +542,66 @@ function loadCartItems() {
         return;
     }
     
-    let html = '';
-    cart.forEach(item => {
-        html += `
-            <div class="cart-item">
-                <img src="https://via.placeholder.com/100?text=${encodeURIComponent(item.name)}" alt="${item.name}" class="cart-item-image">
-                <div class="cart-item-details">
-                    <h4>${item.name}</h4>
-                    <p class="cart-item-price">$${item.price.toFixed(2)}</p>
-                </div>
-                <div class="quantity-control">
-                    <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
-                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, parseInt(this.value))">
-                    <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                </div>
-                <div style="text-align: right;">
-                    <p style="font-weight: 600; margin-bottom: 8px;">$${(item.price * item.quantity).toFixed(2)}</p>
-                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-                </div>
-            </div>
-        `;
-    });
-    
-    cartContainer.innerHTML = html;
-    updateCartSummary();
+    // Load products from JSON to get images
+    fetch('data/products.json')
+        .then(response => response.json())
+        .then(products => {
+            let html = '';
+            cart.forEach(item => {
+                // Find product in JSON by name
+                const product = products.find(p => p.name === item.name);
+                const imageUrl = product ? product.image : 'https://via.placeholder.com/100?text=Product';
+                
+                html += `
+                    <div class="cart-item">
+                        <img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.src='https://via.placeholder.com/100?text=${encodeURIComponent(item.name)}';">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="quantity-control">
+                            <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
+                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, parseInt(this.value))">
+                            <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-weight: 600; margin-bottom: 8px;">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartContainer.innerHTML = html;
+            updateCartSummary();
+        })
+        .catch(error => {
+            console.error('Error loading products:', error);
+            // Fallback: display cart without images
+            let html = '';
+            cart.forEach(item => {
+                html += `
+                    <div class="cart-item">
+                        <img src="https://via.placeholder.com/100?text=Product" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="quantity-control">
+                            <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
+                            <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, parseInt(this.value))">
+                            <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-weight: 600; margin-bottom: 8px;">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            cartContainer.innerHTML = html;
+            updateCartSummary();
+        });
 }
 
 // ========================================
@@ -469,7 +616,7 @@ function updateCartSummary() {
         subtotal += item.price * item.quantity;
     });
     
-    const shipping = subtotal > 50 ? 0 : 10;
+    const shipping = 0;
     const tax = subtotal * 0.1;
     const total = subtotal + shipping + tax;
     
@@ -766,6 +913,19 @@ function initCheckoutSummary() {
 // ========================================
 // ANIMATIONS
 // ========================================
+
+// Newsletter signup handler
+function handleNewsletterSignup(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.querySelector('input[type="email"]').value;
+    
+    // Show success message (no backend)
+    alert(`Thank you for subscribing with ${email}! You'll receive our latest updates soon.`);
+    
+    // Reset form
+    form.reset();
+}
 
 // Add fade-out animation
 const style = document.createElement('style');

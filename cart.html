@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - TechHub Store</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-to-main-content">Skip to main content</a>
+    
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container navbar-container">
@@ -14,11 +18,12 @@
             
             <!-- Search Bar -->
             <div class="search-bar">
-                <form onsubmit="handleSearch(event)" class="search-form">
-                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
-                    <button type="submit" class="search-btn">🔍</button>
+                <form onsubmit="handleSearch(event)" class="search-form" role="search">
+                    <label for="searchInput" class="sr-only">Search products</label>
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off" aria-label="Search products by name or category">
+                    <button type="submit" class="search-btn" aria-label="Search">🔍</button>
                 </form>
-                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;" role="region" aria-live="polite" aria-label="Search suggestions"></div>
             </div>
             
             <ul class="nav-menu">
@@ -28,6 +33,11 @@
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="cart.html" class="active cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
                 <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+                <li><a href="comparison.html" class="comparison-link" title="Compare products">
+                    <i class="fas fa-balance-scale"></i> Compare
+                    <span class="comparison-badge" style="display: none;"></span>
+                </a></li>
+                <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -53,6 +63,17 @@
                 <div class="cart-items" id="cartItems">
                     <!-- Cart items will be populated here -->
                 </div>
+
+                <!-- Wishlist Section -->
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--border-color);">
+                    <h3 style="margin-bottom: 15px;">Wishlist</h3>
+                    <div class="wishlist-items" id="wishlistItems" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+                        <!-- Wishlist items will be populated here -->
+                    </div>
+                    <div id="wishlistEmpty" style="text-align: center; padding: 20px; color: var(--text-light); display: none;">
+                        <p style="font-size: 0.9rem;">Your wishlist is empty</p>
+                    </div>
+                </div>
             </div>
 
             <aside class="cart-summary">
@@ -77,10 +98,10 @@
 
                 <div class="promo-section">
                     <input type="text" id="promoCode" placeholder="Enter promo code" class="input-field">
-                    <button class="btn btn-secondary" onclick="applyPromo()">Apply</button>
+                    <button type="button" class="btn btn-secondary" onclick="applyPromo()">Apply</button>
                 </div>
 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="proceedCheckout()">Proceed to Checkout</button>
+                <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="proceedCheckout()">Proceed to Checkout</button>
                 <a href="products.html" class="btn btn-secondary" style="width: 100%; text-align: center; margin-top: 10px;">Continue Shopping</a>
             </aside>
         </div>
@@ -97,24 +118,36 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="products.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                         <li><a href="#">Privacy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#">Facebook</a>
-                        <a href="#">Twitter</a>
-                        <a href="#">Instagram</a>
-                    </div>
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get special offers and updates!</p>
+                    <form onsubmit="handleNewsletterSignup(event)" class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required aria-label="Newsletter email">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 8px 12px; font-size: 0.9rem;">Subscribe</button>
+                    </form>
                 </div>
                 <div class="footer-section">
                     <h4>Contact Info</h4>
                     <p>Email: info@techhub.com</p>
                     <p>Phone: +1 (555) 123-4567</p>
+                    <h4 style="margin-top: 20px;">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" title="Facebook" aria-label="Follow us on Facebook">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" title="Twitter" aria-label="Follow us on Twitter">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 002.856-3.515 10 10 0 01-2.836.856 5 5 0 002.19-2.758 10 10 0 01-3.129 1.195 5 5 0 00-8.592 4.547 15 15 0 01-10.863-5.5 5 5 0 001.548 6.659 5 5 0 01-2.265-.616v.06a5 5 0 004.001 4.905 5 5 0 01-2.262.085 5 5 0 004.668 3.48 10 10 0 01-6.157 2.124 15 15 0 008.362 2.45c10.034 0 15.507-8.62 15.507-16.064 0-.244-.005-.484-.015-.72a11.013 11.013 0 002.697-2.81z"/></svg>
+                        </a>
+                        <a href="#" title="Instagram" aria-label="Follow us on Instagram">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 2h8.5C19.5 2 22 4.5 22 7.75v8.5C22 19.5 19.5 22 16.25 22h-8.5C4.5 22 2 19.5 2 16.25v-8.5C2 4.5 4.5 2 7.75 2M7.75 4C5.597 4 4 5.597 4 7.75v8.5C4 18.403 5.597 20 7.75 20h8.5c2.153 0 3.75-1.597 3.75-3.75v-8.5C20 5.597 18.403 4 16.25 4h-8.5M12 7c2.762 0 5 2.238 5 5s-2.238 5-5 5-5-2.238-5-5 2.238-5 5-5M12 9c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3M17.5 6.5c.621 0 1.125.504 1.125 1.125S18.121 8.75 17.5 8.75 16.375 8.246 16.375 7.625 16.879 6.5 17.5 6.5Z"/></svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -131,6 +164,8 @@
     <script src="js/ui-components.js"></script>
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/comparison-manager.js"></script>
     <script src="js/cart.js"></script>
+    <script src="js/dark-mode.js"></script>
 </body>
 </html>

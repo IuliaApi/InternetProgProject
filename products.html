@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - TechHub Store</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+    <link rel="stylesheet" href="css/styles.css">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></head>
 <body>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-to-main-content">Skip to main content</a>
+    
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container navbar-container">
@@ -14,11 +16,12 @@
             
             <!-- Search Bar -->
             <div class="search-bar">
-                <form onsubmit="handleSearch(event)" class="search-form">
-                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
-                    <button type="submit" class="search-btn">🔍</button>
+                <form onsubmit="handleSearch(event)" class="search-form" role="search">
+                    <label for="searchInput" class="sr-only">Search products</label>
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off" aria-label="Search products by name or category">
+                    <button type="submit" class="search-btn" aria-label="Search">🔍</button>
                 </form>
-                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;" role="region" aria-live="polite" aria-label="Search suggestions"></div>
             </div>
             
             <ul class="nav-menu">
@@ -28,6 +31,11 @@
                 <li><a href="contact.html">Contact</a></li>
                 <li id="cartNavItem" style="display: none;"><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
                 <li id="loginNavItem"><a href="login.html">Login</a></li>
+                <li><a href="comparison.html" class="comparison-link" title="Compare products">
+                    <i class="fas fa-balance-scale"></i> Compare
+                    <span class="comparison-badge" style="display: none;"></span>
+                </a></li>
+                <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -52,8 +60,8 @@
                 <h3>Filters</h3>
                 
                 <div class="filter-group">
-                    <label class="filter-title">Category</label>
-                    <div class="filter-options">
+                    <label class="filter-title" for="category-audio">Category</label>
+                    <div class="filter-options" role="group" aria-labelledby="category-audio">
                         <label><input type="checkbox" name="category" value="audio"> Audio</label>
                         <label><input type="checkbox" name="category" value="wearables"> Wearables</label>
                         <label><input type="checkbox" name="category" value="video"> Video</label>
@@ -63,23 +71,23 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-title">Price Range</label>
-                    <input type="range" min="0" max="1000" value="1000" class="price-range" onchange="filterProducts()">
+                    <label class="filter-title" for="price-range">Price Range</label>
+                    <input type="range" id="price-range" min="0" max="1000" value="1000" class="price-range" aria-label="Maximum price filter">
                     <div class="price-display">
                         <span>$0 - $<span id="priceValue">1000</span></span>
                     </div>
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-title">Rating</label>
-                    <div class="filter-options">
+                    <label class="filter-title" for="rating-5">Rating</label>
+                    <div class="filter-options" role="group" aria-labelledby="rating-5">
                         <label><input type="checkbox" name="rating" value="5"> ★★★★★ (5 stars)</label>
                         <label><input type="checkbox" name="rating" value="4"> ★★★★☆ (4+ stars)</label>
                         <label><input type="checkbox" name="rating" value="3"> ★★★☆☆ (3+ stars)</label>
                     </div>
                 </div>
 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="resetFilters()">Reset Filters</button>
+                <button type="button" class="btn btn-primary" id="resetFiltersBtn" style="width: 100%; margin-top: 15px;">Reset Filters</button>
             </div>
         </aside>
 
@@ -87,7 +95,7 @@
             <div class="shop-header">
                 <div class="sort-container">
                     <label for="sort">Sort by:</label>
-                    <select id="sort" onchange="sortProducts()">
+                    <select id="sort">
                         <option value="popular">Most Popular</option>
                         <option value="newest">Newest</option>
                         <option value="price-low">Price: Low to High</option>
@@ -96,8 +104,8 @@
                     </select>
                 </div>
                 <div class="view-toggle">
-                    <button class="view-btn grid-view active" onclick="setView('grid')">⊞ Grid</button>
-                    <button class="view-btn list-view" onclick="setView('list')">≡ List</button>
+                    <button type="button" class="view-btn grid-view active" data-view="grid">⊞ Grid</button>
+                    <button type="button" class="view-btn list-view" data-view="list">≡ List</button>
                 </div>
             </div>
 
@@ -108,46 +116,118 @@
     </div>
 
     <script>
-    // Direct inline render - bypasses all external dependencies
-    (function() {
-        const products = [
-            {"id": 1, "name": "Wireless Headphones", "category": "audio", "price": 149.99, "image": "https://www.krazykileys.ca/files/image/attachment/51970/ATH-S300BTBK.png"},
-            {"id": 2, "name": "Smart Watch Pro", "category": "wearables", "price": 299.99, "image": "https://cdn11.bigcommerce.com/s-zkx2f01ivr/images/stencil/1280x1280/products/855/7190/Smart_Watch_Pro1_Sil__08483.1713990534.jpg?c=3"},
-            {"id": 3, "name": "4K Webcam Ultra", "category": "video", "price": 199.99, "image": "https://m.media-amazon.com/images/I/61TowBOapYL._AC_SL1500_.jpg"},
-            {"id": 4, "name": "Portable Charger 50K", "category": "accessories", "price": 79.99, "image": "https://m.media-amazon.com/images/I/61HC2TLZOEL._AC_SL1500_.jpg"},
-            {"id": 5, "name": "USB-C Hub Pro", "category": "accessories", "price": 49.99, "image": "https://m.media-amazon.com/images/I/71VG2JDOngL._AC_SL1500_.jpg"},
-            {"id": 6, "name": "Mechanical Keyboard", "category": "computing", "price": 129.99, "image": "https://m.media-amazon.com/images/I/81yd9W+0doL._AC_SL1500_.jpg"},
-            {"id": 7, "name": "Wireless Mouse", "category": "computing", "price": 39.99, "image": "https://webobjects2.cdw.com/is/image/CDW/3952293?wid=1037&hei=743&resMode=bilin&fit=fit,1"},
-            {"id": 8, "name": "Monitor Light Bar", "category": "video", "price": 89.99, "image": "https://image.benq.com/is/image/benqco/no-windows-home-office-lighting-advice%2001?$ResponsivePreset$&fmt=png-alpha"},
-            {"id": 9, "name": "Bluetooth Speaker", "category": "audio", "price": 69.99, "image": "https://www.sencor.com/getmedia/53d54418-3de4-4fe8-a503-5edb74cac646/35059173.jpg.aspx?width=2100&height=2100&ext=.jpg"},
-            {"id": 10, "name": "Fitness Tracker", "category": "wearables", "price": 99.99, "image": "https://m.media-amazon.com/images/I/61dV494jBgL._AC_SL1500_.jpg"},
-            {"id": 11, "name": "USB-C Cable 3-Pack", "category": "accessories", "price": 19.99, "image": "https://m.media-amazon.com/images/I/81DwfrTrQ-L._SL1500_.jpg"},
-            {"id": 12, "name": "Laptop Stand Aluminum", "category": "computing", "price": 39.99, "image": "https://www.nativeunion.com/cdn/shop/files/DeskStand_Black.webp?v=1756296476&width=800"},
-            {"id": 13, "name": "Microphone Condenser", "category": "audio", "price": 129.99, "image": "https://sontronics.com/cdn/shop/files/STC-20_Pack_Portrait_1024x1024@2x.png?v=1729072048"},
-            {"id": 14, "name": "Phone Stand Adjustable", "category": "accessories", "price": 14.99, "image": "https://m.media-amazon.com/images/I/51v1hI3DpdL._AC_SL1500_.jpg"},
-            {"id": 15, "name": "Wireless Charger Pad", "category": "accessories", "price": 29.99, "image": "https://m.media-amazon.com/images/I/51zByFvQOoL._AC_SL1500_.jpg"},
-            {"id": 16, "name": "4K Monitor 27\"", "category": "video", "price": 399.99, "image": "https://ccimg.canadacomputers.com/Products/800x800/297/749/261899/49757.jpg"},
-            {"id": 17, "name": "Gaming Headset RGB", "category": "audio", "price": 89.99, "image": "https://xrocker.co.uk/cdn/shop/files/x-rocker-panther-rgb-gaming-headset-1_1000x1000_crop_center.jpg?v=1753873720"},
-            {"id": 18, "name": "Smart Ring", "category": "wearables", "price": 349.99, "image": "https://media.jaycar.com.au/product/images/QC3160_smart-ring-with-charging-case-large-black_157822.jpg?format=webp&width=1000"},
-            {"id": 19, "name": "Camera Tripod Pro", "category": "video", "price": 59.99, "image": "https://m.media-amazon.com/images/I/71eTlbLR4tL._AC_SL1500_.jpg"},
-            {"id": 20, "name": "LED Ring Light", "category": "video", "price": 49.99, "image": "https://cdn.mysagestore.com/2707f79fe28ea3c39ee938e00fa80a09/contents/SEMIERL18LEAC/SEMIERL18LEAC@3.jpg"},
-            {"id": 21, "name": "Action Camera Pro", "category": "video", "price": 399.99, "image": "https://media.cameracanada.com/productimage2020/GoPro/GPCHDHF131AT_GOPRO_HERO.jpg"},
-            {"id": 22, "name": "Smart Speaker Mini", "category": "audio", "price": 89.99, "image": "https://source.unsplash.com/400x400/?smart,speaker,home"},
-            {"id": 23, "name": "Wireless Gaming Mouse", "category": "computing", "price": 79.99, "image": "https://www.canex.ca/media/catalog/product/8/4/840272902981-1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="},
-            {"id": 24, "name": "VR Headset", "category": "wearables", "price": 499.99, "image": "https://m.media-amazon.com/images/I/61GhF+JUXGL._AC_SL1500_.jpg"},
-            {"id": 25, "name": "Docking Station USB-C", "category": "accessories", "price": 99.99, "image": "https://www.belkin.com/dw/image/v2/BGBH_PRD/on/demandware.static/-/Sites-master-product-catalog-blk/default/dw6204f0e0/images/hi-res/7/7c3b18a421422876_INC004btSGY_USB-C_11in1_MultiportAdapter_Hero_Web_1.jpg?sw=700&sh=700&sm=fit&sfrm=png"}
-        ];
-        
-        const container = document.getElementById('productsContainer');
-        if (!container) return;
-        
-        let html = '';
-        products.forEach(p => {
-            html += '<div style="border:1px solid #ddd;padding:15px;border-radius:8px;background:white;"><img src="'+p.image+'" alt="'+p.name+'" style="width:100%;height:200px;object-fit:cover;border-radius:5px;margin-bottom:10px;" referrerpolicy="no-referrer" onerror="this.src=\'https://placehold.co/400x400?text='+encodeURIComponent(p.name)+'\'"><h3 style="font-size:16px;margin:10px 0;color:#212529;">'+p.name+'</h3><p style="color:#666;font-size:14px;margin:5px 0;">'+p.category+'</p><p style="font-size:20px;color:#007bff;font-weight:bold;margin:10px 0;">$'+p.price+'</p><button onclick="alert(\'Add to cart: '+p.name+'\')" style="background:#007bff;color:white;border:none;padding:10px;border-radius:5px;cursor:pointer;width:100%;font-size:14px;">Add to Cart</button></div>';
+    window.allProductsData = [
+        {"id": 1, "name": "Wireless Headphones", "category": "audio", "price": 149.99, "originalPrice": 199.99, "rating": 5, "reviews": 124, "image": "https://www.krazykileys.ca/files/image/attachment/51970/ATH-S300BTBK.png"},
+        {"id": 2, "name": "Smart Watch Pro", "category": "wearables", "price": 299.99, "originalPrice": 399.99, "rating": 4, "reviews": 89, "image": "https://cdn11.bigcommerce.com/s-zkx2f01ivr/images/stencil/1280x1280/products/855/7190/Smart_Watch_Pro1_Sil__08483.1713990534.jpg?c=3"},
+        {"id": 3, "name": "4K Webcam Ultra", "category": "video", "price": 199.99, "rating": 5, "reviews": 156, "image": "https://m.media-amazon.com/images/I/61TowBOapYL._AC_SL1500_.jpg"},
+        {"id": 4, "name": "Portable Charger 50K", "category": "accessories", "price": 79.99, "rating": 5, "reviews": 203, "image": "https://m.media-amazon.com/images/I/61HC2TLZOEL._AC_SL1500_.jpg"},
+        {"id": 5, "name": "USB-C Hub Pro", "category": "accessories", "price": 49.99, "originalPrice": 69.99, "rating": 4, "reviews": 87, "image": "https://m.media-amazon.com/images/I/71VG2JDOngL._AC_SL1500_.jpg"},
+        {"id": 6, "name": "Mechanical Keyboard", "category": "computing", "price": 129.99, "rating": 5, "reviews": 142, "image": "https://m.media-amazon.com/images/I/81yd9W+0doL._AC_SL1500_.jpg"},
+        {"id": 7, "name": "Wireless Mouse", "category": "computing", "price": 39.99, "originalPrice": 59.99, "rating": 4, "reviews": 98, "image": "https://webobjects2.cdw.com/is/image/CDW/3952293?wid=1037&hei=743&resMode=bilin&fit=fit,1"},
+        {"id": 8, "name": "Monitor Light Bar", "category": "video", "price": 89.99, "rating": 5, "reviews": 76, "image": "https://image.benq.com/is/image/benqco/no-windows-home-office-lighting-advice%2001?$ResponsivePreset$&fmt=png-alpha"},
+        {"id": 9, "name": "Bluetooth Speaker", "category": "audio", "price": 69.99, "originalPrice": 99.99, "rating": 4, "reviews": 134, "image": "https://www.sencor.com/getmedia/53d54418-3de4-4fe8-a503-5edb74cac646/35059173.jpg.aspx?width=2100&height=2100&ext=.jpg"},
+        {"id": 10, "name": "Fitness Tracker", "category": "wearables", "price": 99.99, "rating": 4, "reviews": 112, "image": "https://m.media-amazon.com/images/I/61dV494jBgL._AC_SL1500_.jpg"},
+        {"id": 11, "name": "USB-C Cable 3-Pack", "category": "accessories", "price": 19.99, "rating": 5, "reviews": 567, "image": "https://m.media-amazon.com/images/I/81DwfrTrQ-L._SL1500_.jpg"},
+        {"id": 12, "name": "Laptop Stand Aluminum", "category": "computing", "price": 39.99, "rating": 5, "reviews": 289, "image": "https://www.nativeunion.com/cdn/shop/files/DeskStand_Black.webp?v=1756296476&width=800"},
+        {"id": 13, "name": "Microphone Condenser", "category": "audio", "price": 129.99, "originalPrice": 179.99, "rating": 5, "reviews": 156, "image": "https://sontronics.com/cdn/shop/files/STC-20_Pack_Portrait_1024x1024@2x.png?v=1729072048"},
+        {"id": 14, "name": "Phone Stand Adjustable", "category": "accessories", "price": 14.99, "rating": 4, "reviews": 432, "image": "https://m.media-amazon.com/images/I/51v1hI3DpdL._AC_SL1500_.jpg"},
+        {"id": 15, "name": "Wireless Charger Pad", "category": "accessories", "price": 29.99, "originalPrice": 49.99, "rating": 5, "reviews": 234, "image": "https://m.media-amazon.com/images/I/51zByFvQOoL._AC_SL1500_.jpg"},
+        {"id": 16, "name": "4K Monitor 27\"", "category": "video", "price": 399.99, "originalPrice": 499.99, "rating": 5, "reviews": 98, "image": "https://ccimg.canadacomputers.com/Products/800x800/297/749/261899/49757.jpg"},
+        {"id": 17, "name": "Gaming Headset RGB", "category": "audio", "price": 89.99, "originalPrice": 129.99, "rating": 4, "reviews": 145, "image": "https://xrocker.co.uk/cdn/shop/files/x-rocker-panther-rgb-gaming-headset-1_1000x1000_crop_center.jpg?v=1753873720"},
+        {"id": 18, "name": "Smart Ring", "category": "wearables", "price": 349.99, "rating": 5, "reviews": 76, "image": "https://media.jaycar.com.au/product/images/QC3160_smart-ring-with-charging-case-large-black_157822.jpg?format=webp&width=1000"},
+        {"id": 19, "name": "Camera Tripod Pro", "category": "video", "price": 59.99, "originalPrice": 89.99, "rating": 5, "reviews": 198, "image": "https://m.media-amazon.com/images/I/71eTlbLR4tL._AC_SL1500_.jpg"},
+        {"id": 20, "name": "LED Ring Light", "category": "video", "price": 49.99, "rating": 4, "reviews": 267, "image": "https://cdn.mysagestore.com/2707f79fe28ea3c39ee938e00fa80a09/contents/SEMIERL18LEAC/SEMIERL18LEAC@3.jpg"},
+        {"id": 21, "name": "Action Camera Pro", "category": "video", "price": 399.99, "originalPrice": 499.99, "rating": 5, "reviews": 176, "image": "https://media.cameracanada.com/productimage2020/GoPro/GPCHDHF131AT_GOPRO_HERO.jpg"},
+        {"id": 22, "name": "Smart Speaker Mini", "category": "audio", "price": 89.99, "originalPrice": 129.99, "rating": 4, "reviews": 345, "image": "https://cdn.cs.1worldsync.com/81/f6/81f6de1b-6117-42a9-a91a-e9dd9e11a1d6.jpg"},
+        {"id": 23, "name": "Wireless Gaming Mouse", "category": "computing", "price": 79.99, "originalPrice": 119.99, "rating": 5, "reviews": 234, "image": "https://www.canex.ca/media/catalog/product/8/4/840272902981-1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="},
+        {"id": 24, "name": "VR Headset", "category": "wearables", "price": 499.99, "rating": 4, "reviews": 89, "image": "https://m.media-amazon.com/images/I/61GhF+JUXGL._AC_SL1500_.jpg"},
+        {"id": 25, "name": "Docking Station USB-C", "category": "accessories", "price": 99.99, "originalPrice": 149.99, "rating": 5, "reviews": 156, "image": "https://www.belkin.com/dw/image/v2/BGBH_PRD/on/demandware.static/-/Sites-master-product-catalog-blk/default/dw6204f0e0/images/hi-res/7/7c3b18a421422876_INC004btSGY_USB-C_11in1_MultiportAdapter_Hero_Web_1.jpg?sw=700&sh=700&sm=fit&sfrm=png"}
+    ];
+    </script>
+
+    <!-- Comparison System -->
+    <script>
+    // Simple comparison system
+    window.simpleComparison = {
+        list: [],
+        init: function() {
+            this.load();
+            console.log('Simple comparison initialized, list:', this.list);
+        },
+        load: function() {
+            try {
+                const data = localStorage.getItem('techhub-comparison');
+                this.list = data ? JSON.parse(data) : [];
+            } catch(e) {
+                this.list = [];
+            }
+        },
+        save: function() {
+            try {
+                localStorage.setItem('techhub-comparison', JSON.stringify(this.list));
+            } catch(e) {}
+        },
+        add: function(id) {
+            id = Number(id);
+            if (!this.list.includes(id)) {
+                if (this.list.length < 4) {
+                    this.list.push(id);
+                    this.save();
+                    this.updateUI();
+                    return true;
+                }
+            }
+            return false;
+        },
+        remove: function(id) {
+            id = Number(id);
+            this.list = this.list.filter(x => x !== id);
+            this.save();
+            this.updateUI();
+        },
+        toggle: function(id) {
+            id = Number(id);
+            if (this.list.includes(id)) {
+                this.remove(id);
+            } else {
+                this.add(id);
+            }
+        },
+        updateUI: function() {
+            // Update badge
+            const badge = document.querySelector('.comparison-badge');
+            if (badge) {
+                if (this.list.length > 0) {
+                    badge.textContent = this.list.length;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+            // Update buttons
+            document.querySelectorAll('.compare-btn').forEach(btn => {
+                const id = Number(btn.dataset.productId);
+                if (this.list.includes(id)) {
+                    btn.innerHTML = '✓ In Comparison';
+                    btn.classList.add('active');
+                } else {
+                    btn.innerHTML = 'Add to Compare';
+                    btn.classList.remove('active');
+                }
+            });
+        }
+    };
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            window.simpleComparison.init();
+            window.simpleComparison.updateUI();
         });
-        container.innerHTML = html;
-        container.className = 'products-grid';
-    })();
+    } else {
+        window.simpleComparison.init();
+        window.simpleComparison.updateUI();
+    }
     </script>
 
     <!-- Footer -->
@@ -161,24 +241,36 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="products.html">Shop</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                         <li><a href="#">Privacy</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#">Facebook</a>
-                        <a href="#">Twitter</a>
-                        <a href="#">Instagram</a>
-                    </div>
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get special offers and updates!</p>
+                    <form onsubmit="handleNewsletterSignup(event)" class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required aria-label="Newsletter email">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 8px 12px; font-size: 0.9rem;">Subscribe</button>
+                    </form>
                 </div>
                 <div class="footer-section">
                     <h4>Contact Info</h4>
                     <p>Email: info@techhub.com</p>
                     <p>Phone: +1 (555) 123-4567</p>
+                    <h4 style="margin-top: 20px;">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" title="Facebook" aria-label="Follow us on Facebook">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" title="Twitter" aria-label="Follow us on Twitter">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 002.856-3.515 10 10 0 01-2.836.856 5 5 0 002.19-2.758 10 10 0 01-3.129 1.195 5 5 0 00-8.592 4.547 15 15 0 01-10.863-5.5 5 5 0 001.548 6.659 5 5 0 01-2.265-.616v.06a5 5 0 004.001 4.905 5 5 0 01-2.262.085 5 5 0 004.668 3.48 10 10 0 01-6.157 2.124 15 15 0 008.362 2.45c10.034 0 15.507-8.62 15.507-16.064 0-.244-.005-.484-.015-.72a11.013 11.013 0 002.697-2.81z"/></svg>
+                        </a>
+                        <a href="#" title="Instagram" aria-label="Follow us on Instagram">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 2h8.5C19.5 2 22 4.5 22 7.75v8.5C22 19.5 19.5 22 16.25 22h-8.5C4.5 22 2 19.5 2 16.25v-8.5C2 4.5 4.5 2 7.75 2M7.75 4C5.597 4 4 5.597 4 7.75v8.5C4 18.403 5.597 20 7.75 20h8.5c2.153 0 3.75-1.597 3.75-3.75v-8.5C20 5.597 18.403 4 16.25 4h-8.5M12 7c2.762 0 5 2.238 5 5s-2.238 5-5 5-5-2.238-5-5 2.238-5 5-5M12 9c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3M17.5 6.5c.621 0 1.125.504 1.125 1.125S18.121 8.75 17.5 8.75 16.375 8.246 16.375 7.625 16.879 6.5 17.5 6.5Z"/></svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -188,6 +280,7 @@
     </footer>
 
     <script src="js/cart-manager.js"></script>
+    <script src="js/comparison-manager.js"></script>
     <script src="js/product-renderer.js"></script>
     <script src="js/filters-sorter.js"></script>
     <script src="js/form-validator.js"></script>
@@ -196,5 +289,5 @@
     <script src="js/script.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/products.js"></script>
-</body>
+    <script src="js/dark-mode.js"></script></body>
 </html>

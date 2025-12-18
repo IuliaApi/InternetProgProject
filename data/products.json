@@ -7,6 +7,8 @@
         "originalPrice": 199.99,
         "rating": 5,
         "reviews": 124,
+        "stock": 45,
+        "description": "Premium wireless headphones with active noise cancellation and 30-hour battery life",
         "image": "https://www.krazykileys.ca/files/image/attachment/51970/ATH-S300BTBK.png"
     },
     {
@@ -17,6 +19,8 @@
         "originalPrice": 399.99,
         "rating": 4,
         "reviews": 89,
+        "stock": 28,
+        "description": "Advanced smartwatch with fitness tracking, heart rate monitor, and 7-day battery",
         "image": "https://cdn11.bigcommerce.com/s-zkx2f01ivr/images/stencil/1280x1280/products/855/7190/Smart_Watch_Pro1_Sil__08483.1713990534.jpg?c=3"
     },
     {
@@ -26,6 +30,8 @@
         "price": 199.99,
         "rating": 5,
         "reviews": 156,
+        "stock": 52,
+        "description": "Professional 4K webcam with auto-focus and built-in microphone for streaming",
         "image": "https://m.media-amazon.com/images/I/61TowBOapYL._AC_SL1500_.jpg"
     },
     {
@@ -35,6 +41,8 @@
         "price": 79.99,
         "rating": 5,
         "reviews": 203,
+        "stock": 78,
+        "description": "High-capacity 50000mAh portable charger with dual USB-C ports and LED display",
         "image": "https://m.media-amazon.com/images/I/61HC2TLZOEL._AC_SL1500_.jpg"
     },
     {
@@ -45,6 +53,8 @@
         "originalPrice": 69.99,
         "rating": 4,
         "reviews": 87,
+        "stock": 35,
+        "description": "7-in-1 USB-C hub with HDMI, SD card reader, and multiple USB ports",
         "image": "https://m.media-amazon.com/images/I/71VG2JDOngL._AC_SL1500_.jpg"
     },
     {
@@ -54,6 +64,8 @@
         "price": 129.99,
         "rating": 5,
         "reviews": 142,
+        "stock": 41,
+        "description": "RGB mechanical keyboard with Cherry MX switches and programmable keys",
         "image": "https://m.media-amazon.com/images/I/81yd9W+0doL._AC_SL1500_.jpg"
     },
     {
@@ -64,6 +76,8 @@
         "originalPrice": 59.99,
         "rating": 4,
         "reviews": 98,
+        "stock": 89,
+        "description": "Ergonomic wireless mouse with precision tracking and 18-month battery life",
         "image": "https://webobjects2.cdw.com/is/image/CDW/3952293?wid=1037&hei=743&resMode=bilin&fit=fit,1"
     },
     {
@@ -73,6 +87,8 @@
         "price": 89.99,
         "rating": 5,
         "reviews": 76,
+        "stock": 24,
+        "description": "Auto-dimming monitor light bar with USB-C power and ambient light sensor",
         "image": "https://image.benq.com/is/image/benqco/no-windows-home-office-lighting-advice%2001?$ResponsivePreset$&fmt=png-alpha"
     },
     {
@@ -83,6 +99,8 @@
         "originalPrice": 99.99,
         "rating": 4,
         "reviews": 134,
+        "stock": 56,
+        "description": "Portable Bluetooth speaker with 360-degree sound and water resistance",
         "image": "https://www.sencor.com/getmedia/53d54418-3de4-4fe8-a503-5edb74cac646/35059173.jpg.aspx?width=2100&height=2100&ext=.jpg"
     },
     {
@@ -92,6 +110,8 @@
         "price": 99.99,
         "rating": 4,
         "reviews": 112,
+        "stock": 67,
+        "description": "Daily fitness tracker with sleep monitoring and 14-day battery life",
         "image": "https://m.media-amazon.com/images/I/61dV494jBgL._AC_SL1500_.jpg"
     },
     {
@@ -101,6 +121,8 @@
         "price": 19.99,
         "rating": 5,
         "reviews": 567,
+        "stock": 234,
+        "description": "Durable USB-C cables certified for fast charging and data transfer",
         "image": "https://m.media-amazon.com/images/I/81DwfrTrQ-L._SL1500_.jpg"
     },
     {
@@ -110,6 +132,8 @@
         "price": 39.99,
         "rating": 5,
         "reviews": 289,
+        "stock": 73,
+        "description": "Premium aluminum laptop stand with adjustable height and cooling design",
         "image": "https://www.nativeunion.com/cdn/shop/files/DeskStand_Black.webp?v=1756296476&width=800"
     },
     {
@@ -120,6 +144,8 @@
         "originalPrice": 179.99,
         "rating": 5,
         "reviews": 156,
+        "stock": 33,
+        "description": "Professional condenser microphone with studio-quality sound and shock mount",
         "image": "https://sontronics.com/cdn/shop/files/STC-20_Pack_Portrait_1024x1024@2x.png?v=1729072048"
     },
     {
@@ -129,6 +155,8 @@
         "price": 14.99,
         "rating": 4,
         "reviews": 432,
+        "stock": 156,
+        "description": "Adjustable phone stand compatible with all devices up to 7 inches",
         "image": "https://m.media-amazon.com/images/I/51v1hI3DpdL._AC_SL1500_.jpg"
     },
     {
@@ -139,6 +167,8 @@
         "originalPrice": 49.99,
         "rating": 5,
         "reviews": 234,
+        "stock": 89,
+        "description": "Fast wireless charging pad compatible with Qi-enabled devices",
         "image": "https://m.media-amazon.com/images/I/51zByFvQOoL._AC_SL1500_.jpg"
     },
     {
@@ -149,6 +179,8 @@
         "originalPrice": 499.99,
         "rating": 5,
         "reviews": 98,
+        "stock": 15,
+        "description": "27-inch 4K monitor with HDR support and USB-C connectivity",
         "image": "https://ccimg.canadacomputers.com/Products/800x800/297/749/261899/49757.jpg"
     },
     {
@@ -159,6 +191,8 @@
         "originalPrice": 129.99,
         "rating": 4,
         "reviews": 145,
+        "stock": 42,
+        "description": "Gaming headset with RGB lighting, 7.1 surround sound, and noise-canceling mic",
         "image": "https://xrocker.co.uk/cdn/shop/files/x-rocker-panther-rgb-gaming-headset-1_1000x1000_crop_center.jpg?v=1753873720"
     },
     {
@@ -168,6 +202,8 @@
         "price": 349.99,
         "rating": 5,
         "reviews": 76,
+        "stock": 8,
+        "description": "Smart ring with health tracking, notifications, and 7-day battery",
         "image": "https://media.jaycar.com.au/product/images/QC3160_smart-ring-with-charging-case-large-black_157822.jpg?format=webp&width=1000"
     },
     {
@@ -178,6 +214,8 @@
         "originalPrice": 89.99,
         "rating": 5,
         "reviews": 198,
+        "stock": 44,
+        "description": "Professional tripod with ball head and lightweight carbon fiber construction",
         "image": "https://m.media-amazon.com/images/I/71eTlbLR4tL._AC_SL1500_.jpg"
     },
     {
@@ -187,6 +225,8 @@
         "price": 49.99,
         "rating": 4,
         "reviews": 267,
+        "stock": 71,
+        "description": "Dimmable LED ring light with phone holder for content creation",
         "image": "https://cdn.mysagestore.com/2707f79fe28ea3c39ee938e00fa80a09/contents/SEMIERL18LEAC/SEMIERL18LEAC@3.jpg"
     },
     {
@@ -197,6 +237,8 @@
         "originalPrice": 499.99,
         "rating": 5,
         "reviews": 176,
+        "stock": 19,
+        "description": "4K action camera with waterproof housing and advanced stabilization",
         "image": "https://media.cameracanada.com/productimage2020/GoPro/GPCHDHF131AT_GOPRO_HERO.jpg"
     },
     {
@@ -207,7 +249,9 @@
         "originalPrice": 129.99,
         "rating": 4,
         "reviews": 345,
-        "image": "https://source.unsplash.com/400x400/?smart,speaker,home"
+        "stock": 92,
+        "description": "Compact smart speaker with voice control and premium sound quality",
+        "image": "https://cdn.cs.1worldsync.com/81/f6/81f6de1b-6117-42a9-a91a-e9dd9e11a1d6.jpg"
     },
     {
         "id": 23,
@@ -217,6 +261,8 @@
         "originalPrice": 119.99,
         "rating": 5,
         "reviews": 234,
+        "stock": 58,
+        "description": "High-precision gaming mouse with customizable DPI and RGB lighting",
         "image": "https://www.canex.ca/media/catalog/product/8/4/840272902981-1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="
     },
     {
@@ -226,6 +272,8 @@
         "price": 499.99,
         "rating": 4,
         "reviews": 89,
+        "stock": 12,
+        "description": "Next-generation VR headset with 4K resolution and motion controllers",
         "image": "https://m.media-amazon.com/images/I/61GhF+JUXGL._AC_SL1500_.jpg"
     },
     {
@@ -236,6 +284,8 @@
         "originalPrice": 149.99,
         "rating": 5,
         "reviews": 156,
+        "stock": 34,
+        "description": "11-in-1 USB-C docking station with multiple ports and power delivery",
         "image": "https://www.belkin.com/dw/image/v2/BGBH_PRD/on/demandware.static/-/Sites-master-product-catalog-blk/default/dw6204f0e0/images/hi-res/7/7c3b18a421422876_INC004btSGY_USB-C_11in1_MultiportAdapter_Hero_Web_1.jpg?sw=700&sh=700&sm=fit&sfrm=png"
     }
 ]

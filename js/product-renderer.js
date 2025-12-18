@@ -31,6 +31,7 @@ const ProductRenderer = (() => {
                     </div>
                     <button class="btn btn-add-cart" onclick="CartManager.addItem('${product.name}', ${product.price}); showNotification('${product.name} added to cart!');">Add to Cart</button>
                     <a href="product-detail.html?id=${product.id}" class="btn btn-secondary">View Details</a>
+                    <button type="button" class="compare-btn" data-product-id="${product.id}" title="Add to comparison">Add to Compare</button>
                 </div>
             </div>
         `;
@@ -106,6 +107,7 @@ const ProductRenderer = (() => {
                                 ${originalPriceHTML}
                             </div>
                             <button class="btn btn-add-cart" onclick="CartManager.addItem('${product.name}', ${product.price}); showNotification('${product.name} added to cart!');">Add to Cart</button>
+                            <button type="button" class="compare-btn" data-product-id="${product.id}" title="Add to comparison">⊕ Compare</button>
                         </div>
                     </div>
                 `;

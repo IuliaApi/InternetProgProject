@@ -237,9 +237,11 @@ function updateAuthUI() {
     const loginNavItem = document.getElementById('loginNavItem');
     
     if (cartNavItem && loginNavItem) {
+        // Cart is always visible
+        cartNavItem.style.display = 'block';
+        
         if (user) {
             // User is logged in
-            cartNavItem.style.display = 'block';
             const nameLabel = user.firstName ? user.firstName : (user.email || 'Account');
             loginNavItem.innerHTML = `<a href="profile.html">👤 ${nameLabel}</a>`;
             
@@ -247,7 +249,6 @@ function updateAuthUI() {
             updateCartCount();
         } else {
             // User is not logged in
-            cartNavItem.style.display = 'none';
             loginNavItem.innerHTML = '<a href="login.html">Login</a>';
         }
     }
