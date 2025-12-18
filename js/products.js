@@ -12,7 +12,34 @@ const itemsPerPage = 12;
 // Fetch and load products from JSON
 async function loadProducts() {
     try {
-        const response = await fetch('data/products.json');
+        // Try multiple path variations for better compatibility
+        const paths = [
+            './data/products.json',
+            'data/products.json',
+            '../data/products.json',
+            '/data/products.json'
+        ];
+        
+        let response = null;
+        let lastError = null;
+        
+        for (const path of paths) {
+            try {
+                response = await fetch(path);
+                if (response.ok) {
+                    break;
+                }
+            } catch (err) {
+                lastError = err;
+                continue;
+            }
+        }
+        
+        if (!response || !response.ok) {
+            console.error('Error loading products:', lastError || 'All fetch attempts failed');
+            return [];
+        }
+        
         const products = await response.json();
         return products;
     } catch (error) {
