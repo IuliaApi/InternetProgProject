@@ -175,37 +175,31 @@ async function handleRegister(event) {
         return;
     }
     
-    // Call Reqres register API
+    // Check if email already exists in local storage
+    const users = getAllUsers();
+    if (users.some(u => u.email === email)) {
+        showNotification('This email is already registered. Please login or use a different email.', 'error');
+        return;
+    }
+    
+    // Create new user in local storage
+    const newUser = {
+        id: users.length + 1,
+        firstName,
+        lastName,
+        email,
+        password,
+        phone: '',
+        createdAt: new Date().toISOString()
+    };
+    
     try {
-        const resp = await fetch('https://reqres.in/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await resp.json();
-        if (resp.ok && data.token) {
-            // Optionally store basic user for local fallback
-            const users = getAllUsers();
-            const newUser = {
-                id: data.id || (users.length + 1),
-                firstName,
-                lastName,
-                email,
-                password,
-                phone: '',
-                createdAt: new Date().toISOString()
-            };
-            saveUserToStorage(newUser);
-            
-            showNotification('Registration successful! Redirecting to login...');
-            setTimeout(() => { window.location.href = 'login.html'; }, 1200);
-            return;
-        } else {
-            const errMsg = data.error || 'Registration failed. Please try again.';
-            showNotification(errMsg, 'error');
-        }
+        saveUserToStorage(newUser);
+        showNotification('Registration successful! Redirecting to login...');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+        return;
     } catch (e) {
-        showNotification('Network error. Please try again.', 'error');
+        showNotification('An error occurred during registration. Please try again.', 'error');
     }
 }
 
