@@ -1,0 +1,73 @@
+[
+    {
+        "productId": 1,
+        "reviews": [
+            {
+                "id": 1,
+                "author": "John Smith",
+                "rating": 5,
+                "date": "2025-12-10",
+                "title": "Excellent sound quality!",
+                "comment": "Best headphones I've ever owned. The noise cancellation is incredible and the battery lasts forever."
+            },
+            {
+                "id": 2,
+                "author": "Sarah Johnson",
+                "rating": 4,
+                "date": "2025-12-08",
+                "title": "Great but pricey",
+                "comment": "Quality is amazing but they cost a bit much. Still worth it for the features."
+            },
+            {
+                "id": 3,
+                "author": "Mike Chen",
+                "rating": 5,
+                "date": "2025-12-05",
+                "title": "Perfect for work",
+                "comment": "Use these every day for video calls. Microphone is clear and comfortable to wear all day."
+            }
+        ]
+    },
+    {
+        "productId": 2,
+        "reviews": [
+            {
+                "id": 1,
+                "author": "Emma Davis",
+                "rating": 5,
+                "date": "2025-12-09",
+                "title": "Love my smartwatch",
+                "comment": "Great battery life and accurate fitness tracking. Syncs perfectly with my phone."
+            },
+            {
+                "id": 2,
+                "author": "Alex Wilson",
+                "rating": 4,
+                "date": "2025-12-07",
+                "title": "Good but interface learning curve",
+                "comment": "Took a while to figure out all the features, but now I love it. Great design."
+            }
+        ]
+    },
+    {
+        "productId": 3,
+        "reviews": [
+            {
+                "id": 1,
+                "author": "Lisa Anderson",
+                "rating": 5,
+                "date": "2025-12-09",
+                "title": "Crystal clear video",
+                "comment": "Perfect for streaming. 4K quality is amazing and low light performance is excellent."
+            },
+            {
+                "id": 2,
+                "author": "Tom Brown",
+                "rating": 5,
+                "date": "2025-12-06",
+                "title": "Professional quality",
+                "comment": "Use this for YouTube content. Best webcam investment ever."
+            }
+        ]
+    }
+]

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - TechHub Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>About TechHub</h1>
+            <p>Your trusted electronics store</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <div class="container">
+        <section class="about-content">
+            <div class="about-section">
+                <h2>Our Story</h2>
+                <p>Founded in 2020, TechHub started with a simple mission: to make premium electronics and gadgets accessible to everyone. What began as a small startup has grown into a trusted name in the industry.</p>
+            </div>
+
+            <div class="about-section">
+                <h2>Our Mission</h2>
+                <p>We believe in providing high-quality tech products at amazingly low prices. Our commitment to customer satisfaction and excellence drives everything we do.</p>
+            </div>
+
+            <div class="about-section">
+                <h2>Why Choose Us?</h2>
+                <ul class="feature-list">
+                    <li>✓ Authentic products from verified manufacturers</li>
+                    <li>✓ Competitive pricing and regular discounts</li>
+                    <li>✓ Fast and reliable shipping</li>
+                    <li>✓ 30-day return policy</li>
+                    <li>✓ Excellent customer support</li>
+                    <li>✓ Secure payment options</li>
+                </ul>
+            </div>
+
+            <div class="about-section">
+                <h2>Our Values</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <h3>Integrity</h3>
+                        <p>We believe in honest business practices and transparency in all our dealings.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Quality</h3>
+                        <p>Every product is carefully selected to ensure the highest standards.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Innovation</h3>
+                        <p>We continuously improve our services to better serve our customers.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Customer Focus</h3>
+                        <p>Your satisfaction is our top priority and success measure.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

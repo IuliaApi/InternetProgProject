@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - TechHub Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>My Account</h1>
+            <p>Manage your profile and settings</p>
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <div class="container" style="padding: 40px 20px;">
+        <div class="profile-content" style="display: grid; grid-template-columns: 250px 1fr; gap: 30px; align-items: start;">
+            <!-- Sidebar Menu -->
+            <aside class="profile-sidebar" style="background-color: var(--light-bg); padding: 20px; border-radius: 8px; height: fit-content; position: sticky; top: 100px;">
+                <nav class="profile-menu">
+                    <button class="profile-menu-item active" onclick="showTab('profile', event)" style="width: 100%; padding: 12px 15px; margin-bottom: 8px; text-align: left; background: none; border: none; cursor: pointer; border-radius: 5px; transition: var(--transition); border-left: 3px solid transparent;">
+                        👤 Profile
+                    </button>
+                    <button class="profile-menu-item" onclick="showTab('orders', event)" style="width: 100%; padding: 12px 15px; margin-bottom: 8px; text-align: left; background: none; border: none; cursor: pointer; border-radius: 5px; transition: var(--transition); border-left: 3px solid transparent;">
+                        📦 Orders
+                    </button>
+                    <button class="profile-menu-item" onclick="showTab('addresses', event)" style="width: 100%; padding: 12px 15px; margin-bottom: 8px; text-align: left; background: none; border: none; cursor: pointer; border-radius: 5px; transition: var(--transition); border-left: 3px solid transparent;">
+                        📍 Addresses
+                    </button>
+                    <button class="profile-menu-item" onclick="showTab('settings', event)" style="width: 100%; padding: 12px 15px; margin-bottom: 8px; text-align: left; background: none; border: none; cursor: pointer; border-radius: 5px; transition: var(--transition); border-left: 3px solid transparent;">
+                        ⚙️ Settings
+                    </button>
+                    <hr style="margin: 15px 0;">
+                    <button onclick="logout()" style="width: 100%; padding: 12px 15px; background-color: var(--danger-color); color: var(--white); border: none; border-radius: 5px; cursor: pointer; transition: var(--transition);">🚪 Logout</button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="profile-main">
+                <!-- Profile Tab -->
+                <div id="profileTab" class="profile-tab" style="background-color: var(--white); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h2 style="margin-bottom: 25px;">My Profile</h2>
+                    
+                    <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 40px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color);">
+                        <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 3rem;">
+                            👤
+                        </div>
+                        <div>
+                            <h3 id="profileName">John Doe</h3>
+                            <p id="profileEmail" style="color: var(--text-light);">john.doe@example.com</p>
+                            <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">Member since December 2024</p>
+                        </div>
+                    </div>
+
+                    <form id="profileForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="pfFirstName" value="John" disabled style="background-color: #f8f9fa;">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="pfLastName" value="Doe" disabled style="background-color: #f8f9fa;">
+                        </div>
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label>Email Address</label>
+                            <input type="email" id="pfEmail" value="john.doe@example.com" disabled style="background-color: #f8f9fa;">
+                        </div>
+                        <div class="form-group" style="grid-column: 1/-1;">
+                            <label>Phone Number</label>
+                            <input type="tel" id="pfPhone" value="+1 (555) 123-4567" disabled style="background-color: #f8f9fa;">
+                        </div>
+                    </form>
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button id="editBtn" class="btn btn-secondary" onclick="editProfile()">Edit Profile</button>
+                        <button id="saveBtn" class="btn btn-primary" onclick="saveProfile()" style="display: none;">Save Changes</button>
+                        <button id="cancelBtn" class="btn btn-secondary" onclick="cancelEdit()" style="display: none;">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- Orders Tab -->
+                <div id="ordersTab" class="profile-tab" style="display: none; background-color: var(--white); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h2 style="margin-bottom: 25px;">My Orders</h2>
+                    
+                    <div class="orders-list">
+                        <div class="order-item" style="padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;">
+                            <div style="font-size: 2rem;">📦</div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Order #TH-2025-001234</h4>
+                                <p style="color: var(--text-light); font-size: 0.9rem;">Placed on December 14, 2025</p>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">3 items • Total: $549.97</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="color: var(--success-color); font-weight: 600; margin-bottom: 10px;">Processing</p>
+                                <a href="order-confirmation.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">View Details</a>
+                            </div>
+                        </div>
+
+                        <div class="order-item" style="padding: 20px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;">
+                            <div style="font-size: 2rem;">✓</div>
+                            <div>
+                                <h4 style="margin-bottom: 5px;">Order #TH-2025-001233</h4>
+                                <p style="color: var(--text-light); font-size: 0.9rem;">Placed on December 10, 2025</p>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">2 items • Total: $229.98</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="color: var(--success-color); font-weight: 600; margin-bottom: 10px;">Delivered</p>
+                                <button class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">Reorder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Addresses Tab -->
+                <div id="addressesTab" class="profile-tab" style="display: none; background-color: var(--white); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h2 style="margin-bottom: 25px;">My Addresses</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="address-card" style="padding: 20px; border: 2px solid var(--primary-color); border-radius: 8px; background-color: #f8f9fa;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                                <h4 style="margin: 0;">Billing Address</h4>
+                                <span style="background-color: var(--primary-color); color: var(--white); padding: 4px 8px; border-radius: 3px; font-size: 0.8rem;">Default</span>
+                            </div>
+                            <p><strong>John Doe</strong></p>
+                            <p>123 Tech Avenue</p>
+                            <p>Montreal, QC H1A 1A1</p>
+                            <p>Canada</p>
+                            <p style="margin-top: 15px; color: var(--text-light);">Phone: +1 (555) 123-4567</p>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.9rem;">Edit</button>
+                                <button class="btn btn-secondary" style="padding: 8px 12px; font-size: 0.9rem;">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="address-card" style="padding: 20px; border: 2px dashed var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; background-color: #f8f9fa;">
+                            <div style="text-align: center;">
+                                <p style="font-size: 2rem; margin-bottom: 10px;">+</p>
+                                <p style="color: var(--text-light);">Add New Address</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settingsTab" class="profile-tab" style="display: none; background-color: var(--white); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <h2 style="margin-bottom: 25px;">Settings</h2>
+                    
+                    <div style="max-width: 500px;">
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="margin: 0 0 5px 0;">Email Notifications</h4>
+                                    <p style="color: var(--text-light); font-size: 0.9rem;">Receive updates about orders and promotions</p>
+                                </div>
+                                <input type="checkbox" checked style="width: 30px; height: 30px; cursor: pointer; accent-color: var(--primary-color);">
+                            </div>
+                        </div>
+
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="margin: 0 0 5px 0;">SMS Notifications</h4>
+                                    <p style="color: var(--text-light); font-size: 0.9rem;">Get text updates for important orders</p>
+                                </div>
+                                <input type="checkbox" style="width: 30px; height: 30px; cursor: pointer; accent-color: var(--primary-color);">
+                            </div>
+                        </div>
+
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="margin: 0 0 5px 0;">Two-Factor Authentication</h4>
+                                    <p style="color: var(--text-light); font-size: 0.9rem;">Enhanced account security</p>
+                                </div>
+                                <input type="checkbox" style="width: 30px; height: 30px; cursor: pointer; accent-color: var(--primary-color);">
+                            </div>
+                        </div>
+
+                        <div style="padding: 20px 0;">
+                            <h4>Change Password</h4>
+                            <button class="btn btn-secondary" style="margin-top: 10px;">Update Password</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

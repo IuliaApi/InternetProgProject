@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - TechHub Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="cartNavItem" style="display: none;"><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
+                <li id="loginNavItem"><a href="login.html">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb" style="background-color: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #dee2e6;">
+        <div class="container">
+            <a href="index.html">Home</a> / 
+            <a href="products.html">Shop</a> / 
+            <span id="breadcrumbProduct">Product</span>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <div class="container" style="padding: 40px 20px;">
+        <div class="product-detail" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
+            <!-- Product Image -->
+            <div class="product-detail-image">
+                <img id="mainImage" src="" alt="Product" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                <div class="image-gallery" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px;">
+                    <img class="thumb" src="" alt="Thumbnail" style="cursor: pointer; border-radius: 5px; border: 2px solid transparent;">
+                    <img class="thumb" src="" alt="Thumbnail" style="cursor: pointer; border-radius: 5px; border: 2px solid transparent;">
+                    <img class="thumb" src="" alt="Thumbnail" style="cursor: pointer; border-radius: 5px; border: 2px solid transparent;">
+                    <img class="thumb" src="" alt="Thumbnail" style="cursor: pointer; border-radius: 5px; border: 2px solid transparent;">
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-detail-info">
+                <h1 id="productName">Product Name</h1>
+                
+                <div class="rating" style="margin: 15px 0;">
+                    <span class="stars" id="productRating">★★★★★</span>
+                    <span class="review-count">(<span id="reviewCount">0</span> reviews)</span>
+                </div>
+
+                <div class="price-detail" style="margin: 20px 0;">
+                    <span class="price" id="productPrice" style="font-size: 2rem;">$0.00</span>
+                    <span class="original-price" id="originalPrice" style="display: none;">$0.00</span>
+                </div>
+
+                <p class="product-category" id="productCategory">Category: <strong></strong></p>
+
+                <div class="product-description" style="margin: 25px 0; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+                    <h3>Description</h3>
+                    <p id="productDescription">Product description will be displayed here.</p>
+                </div>
+
+                <div class="product-features" style="margin: 25px 0;">
+                    <h3>Key Features</h3>
+                    <ul id="productFeatures" style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✓ High Quality</li>
+                        <li style="padding: 8px 0;">✓ Durable Design</li>
+                        <li style="padding: 8px 0;">✓ Warranty Included</li>
+                    </ul>
+                </div>
+
+                <div class="quantity-selector" style="margin: 25px 0; display: flex; align-items: center; gap: 15px;">
+                    <label for="quantity">Quantity:</label>
+                    <div class="quantity-control">
+                        <button onclick="decreaseQuantity()">−</button>
+                        <input type="number" id="quantity" value="1" min="1">
+                        <button onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <div class="product-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0;">
+                    <button class="btn btn-primary" id="addToCartBtn" onclick="addProductToCart()" style="padding: 15px;">Add to Cart</button>
+                    <button class="btn btn-secondary" style="padding: 15px;">Add to Wishlist</button>
+                </div>
+
+                <div class="product-meta" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 25px;">
+                    <p><strong>SKU:</strong> <span id="sku">N/A</span></p>
+                    <p><strong>Stock:</strong> <span id="stock">In Stock</span></p>
+                    <p><strong>Shipping:</strong> Free shipping on orders over $50</p>
+                    <p><strong>Returns:</strong> 30-day return policy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <section style="margin-top: 80px;">
+            <h2 style="margin-bottom: 30px;">Related Products</h2>
+            <div class="products-grid" id="relatedProducts" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <!-- Related products will be populated here -->
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section style="margin-top: 80px; padding: 40px 0; border-top: 2px solid #dee2e6;">
+            <h2 style="margin-bottom: 30px;">Customer Reviews</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <!-- Review Stats -->
+                <div class="review-stats" style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div style="font-size: 3rem; font-weight: bold; color: var(--primary-color); margin-bottom: 10px;" id="avgRating">4.5</div>
+                        <div id="avgStars" class="stars" style="font-size: 1.5rem; margin-bottom: 10px;">★★★★☆</div>
+                        <p style="color: var(--text-gray);">Based on <span id="totalReviews">0</span> reviews</p>
+                    </div>
+                    
+                    <div class="rating-bars" style="margin-top: 30px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <span style="width: 30px;">5★</span>
+                            <div style="flex: 1; background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: var(--primary-color); height: 100%; width: 85%;"></div>
+                            </div>
+                            <span style="width: 30px; text-align: right; color: var(--text-gray);">85%</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <span style="width: 30px;">4★</span>
+                            <div style="flex: 1; background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: var(--primary-color); height: 100%; width: 10%;"></div>
+                            </div>
+                            <span style="width: 30px; text-align: right; color: var(--text-gray);">10%</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <span style="width: 30px;">3★</span>
+                            <div style="flex: 1; background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: var(--primary-color); height: 100%; width: 3%;"></div>
+                            </div>
+                            <span style="width: 30px; text-align: right; color: var(--text-gray);">3%</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <span style="width: 30px;">2★</span>
+                            <div style="flex: 1; background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: var(--primary-color); height: 100%; width: 1%;"></div>
+                            </div>
+                            <span style="width: 30px; text-align: right; color: var(--text-gray);">1%</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 30px;">1★</span>
+                            <div style="flex: 1; background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: var(--primary-color); height: 100%; width: 1%;"></div>
+                            </div>
+                            <span style="width: 30px; text-align: right; color: var(--text-gray);">1%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Individual Reviews -->
+                <div class="reviews-list" id="reviewsList" style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Reviews will be populated here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/product-detail.js"></script>
+</body>
+</html>

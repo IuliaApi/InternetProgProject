@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHub Store - Premium Electronics</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="cartNavItem" style="display: none;"><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
+                <li id="loginNavItem"><a href="login.html">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    </header>
+
+    <!-- Hero Section with Carousel -->
+    <main>
+    <section class="hero" role="banner">
+        <div class="hero-carousel">
+            <div class="carousel-item active">
+                <div class="carousel-content">
+                    <h1>Welcome to TechHub</h1>
+                    <p>Discover Premium Electronics & Gadgets</p>
+                    <a href="products.html" class="btn btn-primary">Shop Now</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-content">
+                    <h1>Latest Tech Arrivals</h1>
+                    <p>Explore our newest collection of cutting-edge devices</p>
+                    <a href="products.html?sort=newest" class="btn btn-primary">View New</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="carousel-content">
+                    <h1>Exclusive Deals</h1>
+                    <p>Save up to 50% on selected premium products</p>
+                    <a href="products.html" class="btn btn-primary">Shop Sale</a>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn prev" onclick="previousSlide()">❮</button>
+            <button class="carousel-btn next" onclick="nextSlide()">❯</button>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+        </div>
+    </section>
+
+    <!-- Product Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2>Shop by Category</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="navigateToCategory('Audio')">
+                    <div class="category-icon">🎧</div>
+                    <h3>Audio</h3>
+                    <p>Headphones, Speakers, Microphones</p>
+                    <span class="category-count">12 products</span>
+                </div>
+                <div class="category-card" onclick="navigateToCategory('Computers')">
+                    <div class="category-icon">💻</div>
+                    <h3>Computers</h3>
+                    <p>Laptops, Desktops, Monitors</p>
+                    <span class="category-count">18 products</span>
+                </div>
+                <div class="category-card" onclick="navigateToCategory('Wearables')">
+                    <div class="category-icon">⌚</div>
+                    <h3>Wearables</h3>
+                    <p>Smart Watches, Fitness Trackers</p>
+                    <span class="category-count">9 products</span>
+                </div>
+                <div class="category-card" onclick="navigateToCategory('Accessories')">
+                    <div class="category-icon">🔌</div>
+                    <h3>Accessories</h3>
+                    <p>Chargers, Cables, Phone Cases</p>
+                    <span class="category-count">25 products</span>
+                </div>
+                <div class="category-card" onclick="navigateToCategory('Video')">
+                    <div class="category-icon">📹</div>
+                    <h3>Video</h3>
+                    <p>Webcams, Cameras, Projectors</p>
+                    <span class="category-count">14 products</span>
+                </div>
+                <div class="category-card" onclick="navigateToCategory('Gaming')">
+                    <div class="category-icon">🎮</div>
+                    <h3>Gaming</h3>
+                    <p>Gaming Gear, Controllers, Headsets</p>
+                    <span class="category-count">16 products</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://www.krazykileys.ca/files/image/attachment/51970/ATH-S300BTBK.png" alt="Wireless Headphones" referrerpolicy="no-referrer" loading="lazy" onerror="if(!this.dataset.f1){this.dataset.f1=1;this.src='https://picsum.photos/seed/Wireless%20Headphones/400/400';}else{this.onerror=null;this.src='https://placehold.co/400x400?text=Image+Unavailable';}">
+                        <span class="badge">New</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Wireless Headphones</h3>
+                        <p class="category">Audio</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(124 reviews)</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price">$149.99</span>
+                            <span class="original-price">$199.99</span>
+                        </div>
+                        <button class="btn btn-add-cart" onclick="addToCart('Wireless Headphones', 149.99)">Add to Cart</button>
+                        <a href="product-detail.html?id=1" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn11.bigcommerce.com/s-zkx2f01ivr/images/stencil/1280x1280/products/855/7190/Smart_Watch_Pro1_Sil__08483.1713990534.jpg?c=3" alt="Smart Watch" referrerpolicy="no-referrer" loading="lazy" onerror="if(!this.dataset.f1){this.dataset.f1=1;this.src='https://picsum.photos/seed/Smart%20Watch/400/400';}else{this.onerror=null;this.src='https://placehold.co/400x400?text=Image+Unavailable';}">
+                        <span class="badge sale">Sale</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Smart Watch Pro</h3>
+                        <p class="category">Wearables</p>
+                        <div class="rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(89 reviews)</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price">$299.99</span>
+                            <span class="original-price">$399.99</span>
+                        </div>
+                        <button class="btn btn-add-cart" onclick="addToCart('Smart Watch Pro', 299.99)">Add to Cart</button>
+                        <a href="product-detail.html?id=2" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://m.media-amazon.com/images/I/61TowBOapYL._AC_SL1500_.jpg" alt="4K Webcam" referrerpolicy="no-referrer" loading="lazy" onerror="if(!this.dataset.f1){this.dataset.f1=1;this.src='https://picsum.photos/seed/4K%20Webcam/400/400';}else{this.onerror=null;this.src='https://placehold.co/400x400?text=Image+Unavailable';}">
+                    </div>
+                    <div class="product-info">
+                        <h3>4K Webcam Ultra</h3>
+                        <p class="category">Video</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(156 reviews)</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price">$199.99</span>
+                        </div>
+                        <button class="btn btn-add-cart" onclick="addToCart('4K Webcam Ultra', 199.99)">Add to Cart</button>
+                        <a href="product-detail.html?id=3" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://m.media-amazon.com/images/I/61HC2TLZOEL._AC_SL1500_.jpg" alt="Portable Charger" referrerpolicy="no-referrer" loading="lazy" onerror="if(!this.dataset.f1){this.dataset.f1=1;this.src='https://picsum.photos/seed/Portable%20Charger/400/400';}else{this.onerror=null;this.src='https://placehold.co/400x400?text=Image+Unavailable';}">
+                        <span class="badge">Popular</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Portable Charger 50K</h3>
+                        <p class="category">Accessories</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(203 reviews)</span>
+                        </div>
+                        <div class="price-section">
+                            <span class="price">$79.99</span>
+                        </div>
+                        <button class="btn btn-add-cart" onclick="addToCart('Portable Charger 50K', 79.99)">Add to Cart</button>
+                        <a href="product-detail.html?id=4" class="btn btn-secondary">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="products.html" class="btn btn-primary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚚</div>
+                    <h3>Free Shipping</h3>
+                    <p>On orders over $50</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Secure Payment</h3>
+                    <p>100% secure transactions</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">↩️</div>
+                    <h3>Easy Returns</h3>
+                    <p>30-day return policy</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💬</div>
+                    <h3>24/7 Support</h3>
+                    <p>Dedicated customer service</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get exclusive deals and latest product updates</p>
+            <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

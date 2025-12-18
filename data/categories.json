@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Audio",
+        "icon": "🎧",
+        "description": "Headphones, Speakers, Microphones",
+        "productCount": 12
+    },
+    {
+        "id": 2,
+        "name": "Computers",
+        "icon": "💻",
+        "description": "Laptops, Desktops, Monitors",
+        "productCount": 18
+    },
+    {
+        "id": 3,
+        "name": "Wearables",
+        "icon": "⌚",
+        "description": "Smart Watches, Fitness Trackers",
+        "productCount": 9
+    },
+    {
+        "id": 4,
+        "name": "Video",
+        "icon": "📹",
+        "description": "Cameras, Webcams, Tripods",
+        "productCount": 8
+    },
+    {
+        "id": 5,
+        "name": "Accessories",
+        "icon": "🔌",
+        "description": "Cables, Chargers, Stands",
+        "productCount": 12
+    }
+]

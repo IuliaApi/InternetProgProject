@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - TechHub Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html" class="active">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="cartNavItem" style="display: none;"><a href="cart.html" class="cart-link"><span class="cart-icon">🛒</span> Cart <span class="cart-count">0</span></a></li>
+                <li id="loginNavItem"><a href="login.html">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Products</h1>
+            <p>Browse our complete collection of premium electronics</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container shopping-container">
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h3>Filters</h3>
+                
+                <div class="filter-group">
+                    <label class="filter-title">Category</label>
+                    <div class="filter-options">
+                        <label><input type="checkbox" name="category" value="audio"> Audio</label>
+                        <label><input type="checkbox" name="category" value="wearables"> Wearables</label>
+                        <label><input type="checkbox" name="category" value="video"> Video</label>
+                        <label><input type="checkbox" name="category" value="accessories"> Accessories</label>
+                        <label><input type="checkbox" name="category" value="computing"> Computing</label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-title">Price Range</label>
+                    <input type="range" min="0" max="1000" value="1000" class="price-range" onchange="filterProducts()">
+                    <div class="price-display">
+                        <span>$0 - $<span id="priceValue">1000</span></span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-title">Rating</label>
+                    <div class="filter-options">
+                        <label><input type="checkbox" name="rating" value="5"> ★★★★★ (5 stars)</label>
+                        <label><input type="checkbox" name="rating" value="4"> ★★★★☆ (4+ stars)</label>
+                        <label><input type="checkbox" name="rating" value="3"> ★★★☆☆ (3+ stars)</label>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </aside>
+
+        <main class="products-section">
+            <div class="shop-header">
+                <div class="sort-container">
+                    <label for="sort">Sort by:</label>
+                    <select id="sort" onchange="sortProducts()">
+                        <option value="popular">Most Popular</option>
+                        <option value="newest">Newest</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn grid-view active" onclick="setView('grid')">⊞ Grid</button>
+                    <button class="view-btn list-view" onclick="setView('list')">≡ List</button>
+                </div>
+            </div>
+
+            <div class="products-grid" id="productsContainer">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+    // Direct inline render - bypasses all external dependencies
+    (function() {
+        const products = [
+            {"id": 1, "name": "Wireless Headphones", "category": "audio", "price": 149.99, "image": "https://www.krazykileys.ca/files/image/attachment/51970/ATH-S300BTBK.png"},
+            {"id": 2, "name": "Smart Watch Pro", "category": "wearables", "price": 299.99, "image": "https://cdn11.bigcommerce.com/s-zkx2f01ivr/images/stencil/1280x1280/products/855/7190/Smart_Watch_Pro1_Sil__08483.1713990534.jpg?c=3"},
+            {"id": 3, "name": "4K Webcam Ultra", "category": "video", "price": 199.99, "image": "https://m.media-amazon.com/images/I/61TowBOapYL._AC_SL1500_.jpg"},
+            {"id": 4, "name": "Portable Charger 50K", "category": "accessories", "price": 79.99, "image": "https://m.media-amazon.com/images/I/61HC2TLZOEL._AC_SL1500_.jpg"},
+            {"id": 5, "name": "USB-C Hub Pro", "category": "accessories", "price": 49.99, "image": "https://m.media-amazon.com/images/I/71VG2JDOngL._AC_SL1500_.jpg"},
+            {"id": 6, "name": "Mechanical Keyboard", "category": "computing", "price": 129.99, "image": "https://m.media-amazon.com/images/I/81yd9W+0doL._AC_SL1500_.jpg"},
+            {"id": 7, "name": "Wireless Mouse", "category": "computing", "price": 39.99, "image": "https://webobjects2.cdw.com/is/image/CDW/3952293?wid=1037&hei=743&resMode=bilin&fit=fit,1"},
+            {"id": 8, "name": "Monitor Light Bar", "category": "video", "price": 89.99, "image": "https://image.benq.com/is/image/benqco/no-windows-home-office-lighting-advice%2001?$ResponsivePreset$&fmt=png-alpha"},
+            {"id": 9, "name": "Bluetooth Speaker", "category": "audio", "price": 69.99, "image": "https://www.sencor.com/getmedia/53d54418-3de4-4fe8-a503-5edb74cac646/35059173.jpg.aspx?width=2100&height=2100&ext=.jpg"},
+            {"id": 10, "name": "Fitness Tracker", "category": "wearables", "price": 99.99, "image": "https://m.media-amazon.com/images/I/61dV494jBgL._AC_SL1500_.jpg"},
+            {"id": 11, "name": "USB-C Cable 3-Pack", "category": "accessories", "price": 19.99, "image": "https://m.media-amazon.com/images/I/81DwfrTrQ-L._SL1500_.jpg"},
+            {"id": 12, "name": "Laptop Stand Aluminum", "category": "computing", "price": 39.99, "image": "https://www.nativeunion.com/cdn/shop/files/DeskStand_Black.webp?v=1756296476&width=800"},
+            {"id": 13, "name": "Microphone Condenser", "category": "audio", "price": 129.99, "image": "https://sontronics.com/cdn/shop/files/STC-20_Pack_Portrait_1024x1024@2x.png?v=1729072048"},
+            {"id": 14, "name": "Phone Stand Adjustable", "category": "accessories", "price": 14.99, "image": "https://m.media-amazon.com/images/I/51v1hI3DpdL._AC_SL1500_.jpg"},
+            {"id": 15, "name": "Wireless Charger Pad", "category": "accessories", "price": 29.99, "image": "https://m.media-amazon.com/images/I/51zByFvQOoL._AC_SL1500_.jpg"},
+            {"id": 16, "name": "4K Monitor 27\"", "category": "video", "price": 399.99, "image": "https://ccimg.canadacomputers.com/Products/800x800/297/749/261899/49757.jpg"},
+            {"id": 17, "name": "Gaming Headset RGB", "category": "audio", "price": 89.99, "image": "https://xrocker.co.uk/cdn/shop/files/x-rocker-panther-rgb-gaming-headset-1_1000x1000_crop_center.jpg?v=1753873720"},
+            {"id": 18, "name": "Smart Ring", "category": "wearables", "price": 349.99, "image": "https://media.jaycar.com.au/product/images/QC3160_smart-ring-with-charging-case-large-black_157822.jpg?format=webp&width=1000"},
+            {"id": 19, "name": "Camera Tripod Pro", "category": "video", "price": 59.99, "image": "https://m.media-amazon.com/images/I/71eTlbLR4tL._AC_SL1500_.jpg"},
+            {"id": 20, "name": "LED Ring Light", "category": "video", "price": 49.99, "image": "https://cdn.mysagestore.com/2707f79fe28ea3c39ee938e00fa80a09/contents/SEMIERL18LEAC/SEMIERL18LEAC@3.jpg"},
+            {"id": 21, "name": "Action Camera Pro", "category": "video", "price": 399.99, "image": "https://media.cameracanada.com/productimage2020/GoPro/GPCHDHF131AT_GOPRO_HERO.jpg"},
+            {"id": 22, "name": "Smart Speaker Mini", "category": "audio", "price": 89.99, "image": "https://source.unsplash.com/400x400/?smart,speaker,home"},
+            {"id": 23, "name": "Wireless Gaming Mouse", "category": "computing", "price": 79.99, "image": "https://www.canex.ca/media/catalog/product/8/4/840272902981-1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=&width="},
+            {"id": 24, "name": "VR Headset", "category": "wearables", "price": 499.99, "image": "https://m.media-amazon.com/images/I/61GhF+JUXGL._AC_SL1500_.jpg"},
+            {"id": 25, "name": "Docking Station USB-C", "category": "accessories", "price": 99.99, "image": "https://www.belkin.com/dw/image/v2/BGBH_PRD/on/demandware.static/-/Sites-master-product-catalog-blk/default/dw6204f0e0/images/hi-res/7/7c3b18a421422876_INC004btSGY_USB-C_11in1_MultiportAdapter_Hero_Web_1.jpg?sw=700&sh=700&sm=fit&sfrm=png"}
+        ];
+        
+        const container = document.getElementById('productsContainer');
+        if (!container) return;
+        
+        let html = '';
+        products.forEach(p => {
+            html += '<div style="border:1px solid #ddd;padding:15px;border-radius:8px;background:white;"><img src="'+p.image+'" alt="'+p.name+'" style="width:100%;height:200px;object-fit:cover;border-radius:5px;margin-bottom:10px;" referrerpolicy="no-referrer" onerror="this.src=\'https://placehold.co/400x400?text='+encodeURIComponent(p.name)+'\'"><h3 style="font-size:16px;margin:10px 0;color:#212529;">'+p.name+'</h3><p style="color:#666;font-size:14px;margin:5px 0;">'+p.category+'</p><p style="font-size:20px;color:#007bff;font-weight:bold;margin:10px 0;">$'+p.price+'</p><button onclick="alert(\'Add to cart: '+p.name+'\')" style="background:#007bff;color:white;border:none;padding:10px;border-radius:5px;cursor:pointer;width:100%;font-size:14px;">Add to Cart</button></div>';
+        });
+        container.innerHTML = html;
+        container.className = 'products-grid';
+    })();
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>

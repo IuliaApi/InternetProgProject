@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <div class="logo">TechHub</div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form onsubmit="handleSearch(event)" class="search-form">
+                    <input type="text" id="searchInput" placeholder="Search products..." class="search-input" autocomplete="off">
+                    <button type="submit" class="search-btn">🔍</button>
+                </form>
+                <div id="searchSuggestions" class="search-suggestions" style="display: none;"></div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 404 Section -->
+    <section class="error-section" style="min-height: 600px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 40px 20px;">
+        <div class="error-container" style="text-align: center; max-width: 600px;">
+            <div style="font-size: 120px; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; line-height: 1;">
+                404
+            </div>
+            
+            <h1 style="font-size: 2.5rem; margin-bottom: 15px; color: var(--text-dark);">
+                Oops! Page Not Found
+            </h1>
+            
+            <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 30px;">
+                The page you're looking for doesn't exist or has been moved. Don't worry, let's get you back on track!
+            </p>
+
+            <div class="error-graphic" style="font-size: 80px; margin: 40px 0;">
+                🔍
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 40px 0;">
+                <a href="index.html" class="btn btn-primary" style="padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center;">Go Home</a>
+                <a href="products.html" class="btn btn-secondary" style="padding: 15px; text-align: center; display: flex; align-items: center; justify-content: center;">Continue Shopping</a>
+            </div>
+
+            <div style="background-color: var(--white); padding: 30px; border-radius: 8px; margin-top: 40px; border-left: 4px solid var(--warning-color);">
+                <h3 style="color: var(--warning-color); margin-bottom: 15px;">Here are some helpful links:</h3>
+                <ul style="list-style: none; text-align: left; display: flex; flex-direction: column; gap: 10px;">
+                    <li><a href="index.html" style="color: var(--primary-color); text-decoration: none;">→ Home Page</a></li>
+                    <li><a href="products.html" style="color: var(--primary-color); text-decoration: none;">→ Product Catalog</a></li>
+                    <li><a href="about.html" style="color: var(--primary-color); text-decoration: none;">→ About Us</a></li>
+                    <li><a href="contact.html" style="color: var(--primary-color); text-decoration: none;">→ Contact Support</a></li>
+                    <li><a href="login.html" style="color: var(--primary-color); text-decoration: none;">→ My Account</a></li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background-color: var(--light-bg); border-radius: 8px;">
+                <p style="margin: 0; color: var(--text-light);">
+                    Need help? <a href="contact.html" style="color: var(--primary-color); font-weight: 600;">Contact our support team</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Us</h4>
+                    <p>TechHub is your trusted source for premium electronics and gadgets at competitive prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: info@techhub.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechHub Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart-manager.js"></script>
+    <script src="js/product-renderer.js"></script>
+    <script src="js/filters-sorter.js"></script>
+    <script src="js/form-validator.js"></script>
+    <script src="js/search-manager.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
